@@ -78,7 +78,7 @@ body {
 .lists:active {
     width: 85%;
     height: 100%;
-    background: #019dfa;
+    background: #fa0101;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
     border-radius: 16px;
     padding: 5%;
@@ -93,7 +93,7 @@ body {
 .active-list {
     width: 85%;
     height: 100%;
-    background: #019dfa;
+    background: #fa0101;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
     border-radius: 16px;
     padding: 5%;
@@ -122,7 +122,7 @@ body {
 #Dr {
     width: 100%;
     text-align: center;
-    background: #019dfa;
+    background: #fa0101;
     color: white;
     padding: 5%;
     padding-top: 6%;
@@ -292,7 +292,7 @@ body {
         height: 55px;
         left: 17px;
         top: 367px;
-        background: #019dfa;
+        background: #fa0101;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
         border-radius: 5px;
     }
@@ -372,7 +372,7 @@ body {
         left: 8%;
         margin-left: 0;
         top: 53%;
-        background: #019dfa;
+        background: #fa0101;
         box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
         border-radius: 5px;
     }
@@ -678,7 +678,7 @@ body {
     width: 100px;
     height: 40px;
     border-radius: 5px;
-    background-color: #019dfa;
+    background-color: #fa0101;
     color: white;
     outline: none;
     text-align: center;
@@ -699,7 +699,7 @@ body {
     width: 100px;
     height: 40px;
     border-radius: 5px;
-    background-color: #019dfa;
+    background-color: #fa0101;
     color: white;
     outline: none;
     text-align: center;
@@ -789,7 +789,7 @@ body {
 #patientId:hover {
     width: 80%;
     height: 65px;
-    background: #019dfa;
+    background: #fa0101;
     padding: 8px 20px 5px 15px;
     border-radius: 40px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
@@ -797,7 +797,7 @@ body {
 #patientId1:hover {
     width: 80%;
     height: 65px;
-    background: #019dfa;
+    background: #fa0101;
     padding: 8px 20px 5px 15px;
     border-radius: 40px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
