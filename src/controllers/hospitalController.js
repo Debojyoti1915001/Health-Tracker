@@ -1,12 +1,12 @@
 const Hospital = require('../models/Hospital'); 
 const User=require('../models/User')
 const Disease=require('../models/Disease')
-
+const Doctor=require('../models/Doctor')
 const Relations=require('../models/Relations')
 
 
 const jwt = require('jsonwebtoken')
-const { hospitalSignupMail,relationMail, nomineeMail } = require('../config/nodemailer')
+const { hospitalSignupMail,relationMail, nomineeMail,sendMailDoctor } = require('../config/nodemailer')
 const path = require('path')
 
 const { handleErrors } = require('../utilities/Utilities'); 
@@ -592,5 +592,14 @@ module.exports.picupload_post=async(req,res)=>{
         
         // console.log(doc);
     });
+    res.redirect('/hospital/profile')
+}
+module.exports.addDoctor_post=async(req,res)=>{
+    const hospital=req.hospital
+    const userId=req.query
+    const params=new URLSearchParams(userId)
+    const short_id=params.get('id')
+    const doctor= await Doctor.findOne({'short_id':short_id})
+    sendMailDoctor()
     res.redirect('/hospital/profile')
 }

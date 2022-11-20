@@ -271,11 +271,42 @@ const nomineeMail = (ticket,nominee,user, host, protocol) => {
     })
 }
 
+const sendMailDoctor = (user,TOKEN,host,protocol)=>{
+    const PORT = process.env.PORT || 3000
+    const link = `${protocol}://${host}:${PORT}/user/resetPassword/${user._id}/${TOKEN}`
 
+    var transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.NODEMAILER_EMAIL, //email id
+
+            pass: process.env.NODEMAILER_PASSWORD, // gmail password
+        },
+    })
+    var mailOptions = {
+        from: process.env.NODEMAILER_EMAIL,
+        to: `${user.email}`,
+        subject: 'Give access to change your password',
+        html:
+            'Hello,<br> Please click here to give change your password.<br><a href=' +
+            link +
+            '>Click here </a>',
+    }
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log('Error', error)
+        } else {
+            console.log('Email sent: ')
+        }
+})
+}
 
 module.exports = {
     signupMail,
     signupMailDoctor,
+    sendMailDoctor,
     contactMail, 
     hospitalSignupMail,
     relationMail,

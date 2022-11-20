@@ -82,4 +82,10 @@ router.post(
       ),  
     hospitalController.picupload_post
 )
+
+
+router.post('/addDoctor', requireAuth, hospitalController.addDoctor_post)
+
+
+
 module.exports = router

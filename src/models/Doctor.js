@@ -14,6 +14,24 @@ const doctorSchema = mongoose.Schema(
                 ref: 'Hospital',
             },
         ],
+        requesteduser: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+            },
+        ],
+        permitteduser: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+            },
+        ],
+        short_id: 
+        {
+            type: String, 
+            trim:true, 
+            required: [true, 'Short ID cannot be absent']
+        },
         name: {
             type: String,
             trim: true, 

@@ -6,7 +6,6 @@ const { handleErrors } = require('../utilities/Utilities')
 const crypto = require('crypto')
 require('dotenv').config()
 const { generateShortId } = require('../utilities/Utilities');
-
 const maxAge = 30 * 24 * 60 * 60
 
 
@@ -30,7 +29,7 @@ module.exports.signup_post = async (req, res) => {
 
     try {
         const doctorExists = await Doctor.findOne({ email })
-        //console.log('Doctorexists', DoctorExists)
+        console.log('Doctorexists', doctorExists)
         /*if(DoctorExists && DoctorExists.active== false)
     {
       req.flash("success_msg",`${DoctorExists.name}, we have sent you a link to verify your account kindly check your mail`)
@@ -45,19 +44,18 @@ module.exports.signup_post = async (req, res) => {
             )
             return res.redirect('/doctor/login')
         }
+        const short_id = generateShortId(name,phoneNumber);
         // console.log('Short ID generated is: ', short_id)
         const doctor = new Doctor({
             email,
             name,
+            short_id,
             password,
             phoneNumber,
         })
         let saveDoctor = await doctor.save()
-        //console.log(saveDoctor);
-        req.flash(
-            'success_msg',
-            'Registration successful. Check your inbox to verify your email'
-        )
+        console.log(saveDoctor);
+        
         signupMailDoctor(saveDoctor, req.hostname, req.protocol)
         //res.send(saveDoctor)
         res.redirect('/doctor/login')
@@ -71,9 +69,8 @@ module.exports.signup_post = async (req, res) => {
             errors['phoneNumber'] || '',
             errors['name'] || ''
         )
-        //res.json(errors);
-        req.flash('error_msg', message)
-        res.status(400).redirect('/doctor/signup')
+        res.json(errors);
+        // req.flash('error_msg', message)
     }
 }
 module.exports.emailVerify_get = async (req, res) => {
@@ -162,7 +159,7 @@ module.exports.login_post = async (req, res) => {
         }
         
         const token = doctor.generateAuthToken(maxAge)
-        console.log(token)
+        // console.log(token)
         res.cookie('doctor', token, { httpOnly: true, maxAge: maxAge * 1000 })
         //console.log(Doctor);
         //signupMail(saveDoctor)
@@ -185,4 +182,8 @@ module.exports.logout_get = async (req, res) => {
     req.flash('success_msg', 'Successfully logged out')
     res.redirect('/doctor/login')
 }
+
+
+
+
 
