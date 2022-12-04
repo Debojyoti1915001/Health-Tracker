@@ -610,20 +610,46 @@ module.exports.approveDoctor_get=async(req,res)=>{
     const hospital=req.hospital
     const doctorId=req.params.id
     const doctor=await Doctor.findOne({_id:doctorId})
-
+    
     const availability=req.params.availability
     
     // console.log(req.params)
     
     const doctorHospitals=doctor.hospital
     doctorHospitals.push({'hospitalId':hospital._id,'availability':availability})
-    const updatingDoctorsList= await Doctor.findOneAndUpdate({hospital:doctorHospitals})
+    await Doctor.findOneAndUpdate(
+        { _id: doctor._id },
+        { $set: {hospital:doctorHospitals} },
+        { new: true },
+        (err, doc) => {
+            if (err) {
+                console.log('Something wrong when updating data!')
+                req.flash('error_msg', 'Something wrong when updating data!')
+                res.redirect('/user/profile')
+            }
 
+            // console.log(doc)
+        }
+    )
     const availableDoctors=req.hospital.doctor
     availableDoctors.push({'doctorId':doctor._id,'availability':availability});
-    const updatingHospitalsList= await Hospital.findOneAndUpdate({doctor:availableDoctors})
-    // console.log(req.hospital.doctor)
-    res.send({updatingDoctorsList,updatingHospitalsList})
+    await Hospital.findOneAndUpdate(
+        { _id: hospital._id },
+        { $set: {doctor:availableDoctors} },
+        { new: true },
+        (err, doc) => {
+            if (err) {
+                console.log('Something wrong when updating data!')
+                req.flash('error_msg', 'Something wrong when updating data!')
+                res.redirect('/user/profile')
+            }
+
+            // console.log(doc)
+        }
+    )
+    // console.error(updatingHospitalsList)
+    // console.error(updatingDoctorsList)
+    res.redirect('/hospital/profile')
 
     // res.redirect('/hospital/profile')
 }

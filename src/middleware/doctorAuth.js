@@ -42,7 +42,7 @@ catch(error){
 
 
 const redirectIfLoggedIn = (req, res, next) => {
-    const token = req.cookies.jwt 
+    const token = req.cookies.doctor
     if (token)
     {
         req.flash("error_msg", "You are already logged in.")

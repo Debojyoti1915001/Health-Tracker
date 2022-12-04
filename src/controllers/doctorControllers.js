@@ -2,7 +2,7 @@ const Doctor = require('../models/Doctor')
 const User = require('../models/User')
 const Hospital = require('../models/Hospital')
 const jwt = require('jsonwebtoken')
-const { signupMailDoctor, passwordMail,sendMailHospitalDoctor } = require('../config/nodemailer')
+const { signupMailDoctor, passwordMail, sendMailHospitalDoctor } = require('../config/nodemailer')
 const path = require('path')
 const { handleErrors } = require('../utilities/Utilities')
 const crypto = require('crypto')
@@ -13,11 +13,15 @@ const maxAge = 30 * 24 * 60 * 60
 
 // controller actions
 module.exports.signup_get = (req, res) => {
-    res.send("signup")
+    res.render('./doctorViews/signup', {
+        type: 'signup',
+    })
 }
 
 module.exports.login_get = (req, res) => {
-    res.send("login")
+    res.render('./doctorViews/signup', {
+        type: 'login',
+    })
 }
 
 module.exports.signup_post = async (req, res) => {
@@ -46,7 +50,7 @@ module.exports.signup_post = async (req, res) => {
             )
             return res.redirect('/doctor/login')
         }
-        const short_id = generateShortId(name,phoneNumber);
+        const short_id = generateShortId(name, phoneNumber);
         // console.log('Short ID generated is: ', short_id)
         const doctor = new Doctor({
             email,
@@ -57,7 +61,7 @@ module.exports.signup_post = async (req, res) => {
         })
         let saveDoctor = await doctor.save()
         console.log(saveDoctor);
-        
+
         signupMailDoctor(saveDoctor, req.hostname, req.protocol)
         //res.send(saveDoctor)
         res.redirect('/doctor/login')
@@ -125,12 +129,12 @@ module.exports.login_post = async (req, res) => {
     // console.log('in Login route')
     // console.log('req.body',req.body)
     try {
-        
+
         const doctor = await Doctor.login(email, password)
         // console.log("Doctor",Doctor)
 
         const doctorExists = await Doctor.findOne({ email })
-        console.log("Doctorexsits",doctorExists)
+        console.log("Doctorexsits", doctorExists)
 
         if (!doctorExists.active) {
             const currDate = new Date()
@@ -159,7 +163,7 @@ module.exports.login_post = async (req, res) => {
             res.redirect('/doctor/login')
             return
         }
-        
+
         const token = doctor.generateAuthToken(maxAge)
         // console.log(token)
         res.cookie('doctor', token, { httpOnly: true, maxAge: maxAge * 1000 })
@@ -170,47 +174,76 @@ module.exports.login_post = async (req, res) => {
         res.status(200).redirect('/doctor/profile')
     } catch (err) {
         res.send('error_msg', 'Invalid Credentials')
-        
+
     }
 }
 module.exports.profile_get = async (req, res) => {
-    const doctor=req.doctor
-    const allHospitals=await Hospital.find({})
-    //634c4a9238b22e5c64847214 hospital
-    res.send({allHospitals,doctor})
-
+    try {
+        const doctor = req.doctor
+        const allHospitals = await Hospital.find({})
+        const hospital=doctor.hospital
+        // console.log(hospital)
+        const hospitals=[]
+        for(var i=0;i<hospital.length;i++){
+            var currentHospital=await Hospital.findOne({_id:hospital[i].hospitalId})
+            hospitals.push({"hos":currentHospital,"ab":hospital[i].availability})
+        }
+        console.log(hospitals)
+        // const userDisease = await req.user
+        // .populate('disease', 'name')
+        // .execPopulate()
+        //634c4a9238b22e5c64847214 hospital
+        res.render('./doctorViews/profile', {
+            allHospitals,
+            doctor,
+            hospitals
+        })
+    } catch (err) {
+        res.send(err)
+    }
 }
-
 module.exports.logout_get = async (req, res) => {
-    
+
     res.clearCookie('doctor')
     req.flash('success_msg', 'Successfully logged out')
     res.redirect('/doctor/login')
 }
 
-module.exports.requestUser_get = async(req, res) => {
-    const id=req.params.id
+module.exports.requestUser_get = async (req, res) => {
+    const id = req.params.id
 
 }
 
-module.exports.requestHospital_post = async(req, res) => {
-    const id=req.params.id
-    const availability=req.body.availability
-    const hospital=await Hospital.findOne({ _id: id })
-    const doctor=req.doctor
-    sendMailHospitalDoctor(doctor,hospital,availability,req.hostname, req.protocol)
+module.exports.requestHospital_post = async (req, res) => {
+    const id = req.params.id
+    const availability = req.body.availability
+    console.log(availability)
+    const hospital = await Hospital.findOne({ _id: id })
+    const doctor = req.doctor
+    sendMailHospitalDoctor(doctor, hospital, availability, req.hostname, req.protocol)
     res.redirect('/doctor/profile')
 }
 
-module.exports.requestUser_get = async(req, res) => {
-    const userId=req.params.id
-    const user=await User.findOne({ _id: userId })
-    const doctor=req.doctor
-    sendMailUserDoctor(doctor,user,req.hostname, req.protocol)
+module.exports.requestUser_get = async (req, res) => {
+    const userId = req.params.id
+    const user = await User.findOne({ _id: userId })
+    const doctor = req.doctor
+    sendMailUserDoctor(doctor, user, req.hostname, req.protocol)
     res.redirect('/doctor/profile')
 }
-module.exports.searchUser_post = async(req, res) => {
-    const short_id=req.body.id
-    const user=await User.findOne({ short_id })
+module.exports.searchUser_post = async (req, res) => {
+    const short_id = req.body.id
+    const user = await User.findOne({ short_id })
     res.json(user)
+}
+module.exports.hospital_get = async (req, res) => {
+    const id = req.params.id
+    const hospital = await Hospital.findOne({ _id:id })   
+    const token = hospital.generateAuthToken(maxAge)
+
+        res.cookie('hospital', token, { httpOnly: true, maxAge: maxAge * 1000 })
+        //console.log(user);
+        //signupMail(saveUser)
+        req.flash('success_msg', 'Successfully logged in')
+        res.status(200).redirect('/hospital/profile') 
 }

@@ -104,4 +104,5 @@ router.post('/requestHospital/:id', requireAuth, doctorController.requestHospita
 
 router.post('/searchUser', requireAuth,doctorController.searchUser_post)
 router.get('/requestUser/:id', requireAuth,doctorController.requestUser_get)
+router.get('/hospital/:id', requireAuth,doctorController.hospital_get)
 module.exports = router

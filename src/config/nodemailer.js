@@ -319,12 +319,12 @@ const sendMailHospitalDoctor = (doctor,hospital,availability,host,protocol)=>{
     var mailOptions = {
         from: process.env.NODEMAILER_EMAIL,
         to: `${hospital.email}`,
-        subject: 'Give access to change your password',
+        subject: 'Request for approval of hospital timings',
         html:
             'Hello,<br> Please click here to give access to Doctor.<br><a href=' +
             link +
-            '>Click here </a><br>Availability'
-            +availability,
+            '>Click here </a><br>Availability: '
+            + availability,
     }
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
@@ -352,7 +352,7 @@ const sendMailUserDoctor = (doctor,hospital,availability,host,protocol)=>{
     var mailOptions = {
         from: process.env.NODEMAILER_EMAIL,
         to: `${hospital.email}`,
-        subject: 'Give access to change your password',
+        subject: 'Request for approval of hospital timings',
         html:
             'Hello,<br> Please click here to give access to Doctor.<br><a href=' +
             link +
