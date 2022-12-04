@@ -95,5 +95,6 @@ router.get('/logout', requireAuth, doctorController.logout_get)
 router.get('/profile', requireAuth, doctorController.profile_get)
 
 
+router.get('/requestUser/:id', requireAuth, doctorController.requestUser_get)
 
 module.exports = router

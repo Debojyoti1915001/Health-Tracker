@@ -183,7 +183,11 @@ module.exports.logout_get = async (req, res) => {
     res.redirect('/doctor/login')
 }
 
+module.exports.requestUser_get = (req, res) => {
+    const id=req.params.id
+
+}
 
 
 
-
+ 
