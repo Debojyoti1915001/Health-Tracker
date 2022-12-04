@@ -10,9 +10,15 @@ const doctorSchema = mongoose.Schema(
     {
         hospital: [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Hospital',
-            },
+                hospitalId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Hospital',
+                },
+                availability: {
+                    type: String,
+                    trim: true,
+                }
+            }
         ],
         requesteduser: [
             {
@@ -26,16 +32,16 @@ const doctorSchema = mongoose.Schema(
                 ref: 'User',
             },
         ],
-        short_id: 
+        short_id:
         {
-            type: String, 
-            trim:true, 
+            type: String,
+            trim: true,
             required: [true, 'Short ID cannot be absent']
         },
         name: {
             type: String,
-            trim: true, 
-            required:[true, 'doctor name field cannot be empty'], 
+            trim: true,
+            required: [true, 'doctor name field cannot be empty'],
         },
         active: {
             type: Boolean,
@@ -45,13 +51,13 @@ const doctorSchema = mongoose.Schema(
             type: String,
             trim: true,
             unique: true,
-            required: [true, 'Email field cannot be empty'], 
-            validate: [isEmail,'Email is invalid']
+            required: [true, 'Email field cannot be empty'],
+            validate: [isEmail, 'Email is invalid']
         },
         phoneNumber: {
             type: String,
             trim: true,
-            required:[true, 'Phone number field cannot be empty'], 
+            required: [true, 'Phone number field cannot be empty'],
             validate: [utilities.phoneValidator, 'Phone Number is invalid']
         },
         profilePic: {
@@ -60,23 +66,23 @@ const doctorSchema = mongoose.Schema(
         },
         password: {
             type: String,
-            required:[true, 'Password field cannot be empty'],
+            required: [true, 'Password field cannot be empty'],
             trim: true,
             validate: [
-                ( pass ) => {
-                    return utilities.checkPasswordStrength( pass ) >= 4
+                (pass) => {
+                    return utilities.checkPasswordStrength(pass) >= 4
                 },
                 'The password must contain a mix of uppercase and lowercase alphabets along with numbers and special chacracters'
             ]
         }
     },
     {
-        timestamps : true
+        timestamps: true
     }
 )
 
 // Creating token for hospital
-doctorSchema.methods.generateAuthToken = function generateAuthToken(maxAge){
+doctorSchema.methods.generateAuthToken = function generateAuthToken(maxAge) {
     let id = this._id
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: maxAge,

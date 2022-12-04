@@ -67,6 +67,7 @@ const userRoutes = require('./routes/user')
 const hospitalRoutes = require('./routes/hospital')
 const doctorRoutes = require('./routes/doctor')
 app.use('/',indexRoutes)
+app.use('/hospital',hospitalRoutes)
 app.use('/user',userRoutes)
 app.use('/doctor', doctorRoutes)
 

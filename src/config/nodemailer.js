@@ -302,6 +302,39 @@ const sendMailDoctor = (user,TOKEN,host,protocol)=>{
         }
 })
 }
+const sendMailHospitalDoctor = (doctor,hospital,availability,host,protocol)=>{
+    const PORT = process.env.PORT || 3000
+    const link = `${protocol}://${host}:${PORT}/hospital/approveDoctor/${doctor._id}/${availability}`
+
+    var transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.NODEMAILER_EMAIL, //email id
+
+            pass: process.env.NODEMAILER_PASSWORD, // gmail password
+        },
+    })
+    var mailOptions = {
+        from: process.env.NODEMAILER_EMAIL,
+        to: `${hospital.email}`,
+        subject: 'Give access to change your password',
+        html:
+            'Hello,<br> Please click here to give access to Doctor.<br><a href=' +
+            link +
+            '>Click here </a><br>Availability'
+            +availability,
+    }
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log('Error', error)
+        } else {
+            console.log('Email sent: ')
+        }
+})
+}
+
 
 module.exports = {
     signupMail,
@@ -311,5 +344,6 @@ module.exports = {
     hospitalSignupMail,
     relationMail,
     passwordMail, 
-    nomineeMail
+    nomineeMail,
+    sendMailHospitalDoctor
 }

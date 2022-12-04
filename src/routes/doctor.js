@@ -97,4 +97,11 @@ router.get('/profile', requireAuth, doctorController.profile_get)
 
 router.get('/requestUser/:id', requireAuth, doctorController.requestUser_get)
 
+
+
+//hospital connection with doctor
+router.post('/requestHospital/:id', requireAuth, doctorController.requestHospital_post)
+
+
+
 module.exports = router

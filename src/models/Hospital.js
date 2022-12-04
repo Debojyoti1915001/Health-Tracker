@@ -5,14 +5,19 @@ const bcrypt = require('bcryptjs')
 const utilities = require('../utilities/Utilities')
 const { isEmail } = require('validator')
 require('dotenv').config()
-
 const hospitalSchema = mongoose.Schema(
     {
         doctor: [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Doctor',
-            },
+                doctorId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Doctor',
+                },
+                availability: {
+                    type: String,
+                    trim: true,
+                }
+            }
         ],
         licenseNumber:{
             type: String,

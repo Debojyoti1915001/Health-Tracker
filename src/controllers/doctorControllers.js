@@ -1,6 +1,7 @@
 const Doctor = require('../models/Doctor')
+const Hospital = require('../models/Hospital')
 const jwt = require('jsonwebtoken')
-const { signupMailDoctor, passwordMail } = require('../config/nodemailer')
+const { signupMailDoctor, passwordMail,sendMailHospitalDoctor } = require('../config/nodemailer')
 const path = require('path')
 const { handleErrors } = require('../utilities/Utilities')
 const crypto = require('crypto')
@@ -173,7 +174,10 @@ module.exports.login_post = async (req, res) => {
 }
 module.exports.profile_get = async (req, res) => {
     const doctor=req.doctor
-    res.send(doctor)
+    const allHospitals=await Hospital.find({})
+    //634c4a9238b22e5c64847214 hospital
+    res.send({allHospitals,doctor})
+
 }
 
 module.exports.logout_get = async (req, res) => {
@@ -183,11 +187,18 @@ module.exports.logout_get = async (req, res) => {
     res.redirect('/doctor/login')
 }
 
-module.exports.requestUser_get = (req, res) => {
+module.exports.requestUser_get = async(req, res) => {
     const id=req.params.id
 
 }
 
-
+module.exports.requestHospital_post = async(req, res) => {
+    const id=req.params.id
+    const availability=req.body.availability
+    const hospital=await Hospital.findOne({ _id: id })
+    const doctor=req.doctor
+    sendMailHospitalDoctor(doctor,hospital,availability,req.hostname, req.protocol)
+    res.redirect('/doctor/profile')
+}
 
  
