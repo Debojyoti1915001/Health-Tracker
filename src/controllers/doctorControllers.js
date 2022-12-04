@@ -1,4 +1,5 @@
 const Doctor = require('../models/Doctor')
+const User = require('../models/User')
 const Hospital = require('../models/Hospital')
 const jwt = require('jsonwebtoken')
 const { signupMailDoctor, passwordMail,sendMailHospitalDoctor } = require('../config/nodemailer')
@@ -201,4 +202,15 @@ module.exports.requestHospital_post = async(req, res) => {
     res.redirect('/doctor/profile')
 }
 
- 
+module.exports.requestUser_get = async(req, res) => {
+    const userId=req.params.id
+    const user=await User.findOne({ _id: userId })
+    const doctor=req.doctor
+    sendMailUserDoctor(doctor,user,req.hostname, req.protocol)
+    res.redirect('/doctor/profile')
+}
+module.exports.searchUser_post = async(req, res) => {
+    const short_id=req.body.id
+    const user=await User.findOne({ short_id })
+    res.json(user)
+}

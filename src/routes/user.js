@@ -125,4 +125,8 @@ router.post(
       ),  
     authController.picupload_post
 )
+
+router.get('/approveUserDoctor/:id',requireAuth,authController.approveUserDoctor)
+
+
 module.exports = router

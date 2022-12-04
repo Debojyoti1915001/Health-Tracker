@@ -1,5 +1,6 @@
 const User = require('../models/User')
 const Hospital = require('../models/Hospital')
+const Doctor = require('../models/Doctor')
 const jwt = require('jsonwebtoken')
 const { signupMail, passwordMail } = require('../config/nodemailer')
 const path = require('path')
@@ -111,7 +112,7 @@ module.exports.signup_post = async (req, res) => {
 
     try {
         const userExists = await User.findOne({ email })
-        //console.log('userexists', userExists)
+        console.log('userexists', userExists)
         /*if(userExists && userExists.active== false)
     {
       req.flash("success_msg",`${userExists.name}, we have sent you a link to verify your account kindly check your mail`)
@@ -214,7 +215,7 @@ module.exports.login_post = async (req, res) => {
         //console.log("user",user)
 
         const userExists = await User.findOne({ email })
-        // console.log("userexsits",userExists)
+        console.log("userexsits",userExists)
 
         if (!userExists.active) {
             const currDate = new Date()
@@ -591,7 +592,7 @@ module.exports.download = async (req, res) => {
 module.exports.picupload_post = async (req, res) => {
     const user = req.user
     const picPath = user.profilePic
-    User.findOneAndUpdate(
+    await User.findOneAndUpdate(
         { _id: user._id },
         { $set: { profilePic: picPath } },
         { new: true },
@@ -607,3 +608,25 @@ module.exports.picupload_post = async (req, res) => {
     )
     res.redirect('/user/profile')
 }
+
+module.exports.approveUserDoctor = async (req, res) => {
+    const user = req.user
+    const id=req.params.id//doctor
+    
+    const doctor = await Doctor.findOne({
+        _id: id,
+    })
+    const permitteddoctor=user.doctor
+    if(!permitteddoctor.includes(id)){
+        permitteddoctor.push(id)
+        await User.findOneAndUpdate({permitteddoctor})
+    }
+    const permitteduser=doctor.permitteduser
+    if(!permitteduser.include(user._id)){
+        permitteduser.push(user._id)
+        await Doctor.findOneAndUpdate({permitteduser})
+    }
+
+    res.redirect('/user/profile')
+}
+

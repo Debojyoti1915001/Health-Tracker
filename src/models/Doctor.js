@@ -20,12 +20,6 @@ const doctorSchema = mongoose.Schema(
                 }
             }
         ],
-        requesteduser: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User',
-            },
-        ],
         permitteduser: [
             {
                 type: mongoose.Schema.Types.ObjectId,

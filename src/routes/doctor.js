@@ -102,6 +102,6 @@ router.get('/requestUser/:id', requireAuth, doctorController.requestUser_get)
 //hospital connection with doctor
 router.post('/requestHospital/:id', requireAuth, doctorController.requestHospital_post)
 
-
-
+router.post('/searchUser', requireAuth,doctorController.searchUser_post)
+router.get('/requestUser/:id', requireAuth,doctorController.requestUser_get)
 module.exports = router
