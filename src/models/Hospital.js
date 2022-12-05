@@ -29,6 +29,10 @@ const hospitalSchema = mongoose.Schema(
             trim: true, 
             required:[true, 'Hospital name field cannot be empty'], 
         },
+        address: {
+            type: String,
+            trim: true,  
+        },
         adminName: {
             type: String,
             trim: true

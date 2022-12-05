@@ -123,7 +123,13 @@ module.exports.profile_get = async (req, res) => {
     res.locals.hospital = req.hospital
      //console.log("hospital", req.hospital)
     const patients = await Relations.find({'isPermitted': true, 'hospitalId': req.hospital._id},"userId").populate('userId','name'); 
-    
+    const passDoctors=[];
+    const doctor=req.hospital.doctor
+
+    for(var i=0;i<doctor.length;i++){
+        var curDoctor=await Doctor.findOne({_id:doctor[i].doctorId})
+        passDoctors.push({"doctor":curDoctor,"availability": doctor[i].availability})
+    }
     // console.log("patientssssss",patients)
     res.render("./hospitalViews/profile",
     {path:'/hospital/profile',
@@ -131,6 +137,7 @@ module.exports.profile_get = async (req, res) => {
     foundUser:null,
     access:null, 
     custom_flash:null, 
+    passDoctors
       })
 }
 
@@ -181,7 +188,7 @@ module.exports.emailVerify_get = async (req, res) => {
 }
 
 module.exports.signup_post = async (req, res) => {
-    const { licenseNumber,  hospitalName, email, phoneNumber,password, confirmPwd  } = req.body
+    const { licenseNumber,  address,hospitalName, email, phoneNumber,password, confirmPwd  } = req.body
     //console.log("in sign up route",req.body);
     if (!(!password || !confirmPwd) && (password != confirmPwd)) {
         req.flash('error_msg', 'Passwords do not match. Try again')
@@ -207,7 +214,7 @@ module.exports.signup_post = async (req, res) => {
             return res.redirect('/hospital/login')
         }
 
-        const hospital = new Hospital({ licenseNumber,  hospitalName, email, phoneNumber,password  })
+        const hospital = new Hospital({ licenseNumber,  address, hospitalName, email, phoneNumber,password  })
         let saveUser = await hospital.save()
         //console.log(saveUser);
         req.flash(
@@ -389,7 +396,16 @@ module.exports.patient_search = async (req, res) =>
         //    console.log('searched patient',access);
         //    console.log("Found patient that I am passing into the ejs file", result);
            const custom_flash = "User found"; 
-            res.render("./hospitalViews/profile", {path:'/hospital/search', patients:patients,access:access, foundUser:result, custom_flash:custom_flash });
+
+           //add here
+           const passDoctors=[];
+    const doctor=req.hospital.doctor
+
+    for(var i=0;i<doctor.length;i++){
+        var curDoctor=await Doctor.findOne({_id:doctor[i].doctorId})
+        passDoctors.push({"doctor":curDoctor,"availability": doctor[i].availability})
+    }
+            res.render("./hospitalViews/profile", {passDoctors,path:'/hospital/search', patients:patients,access:access, foundUser:result, custom_flash:custom_flash });
             return 
 
         }

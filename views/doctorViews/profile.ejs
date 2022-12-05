@@ -77,12 +77,12 @@
         <h5 id="name"><%if (doctor.name) { %>
             <%=doctor.name %>
             <% } %></h5>
-        <h4 id="heading1">Patient Id-:<%if (doctor.short_id) { %>
+        <h4 id="heading1">Doctor Id-:<%if (doctor.short_id) { %>
             <%=doctor.short_id %>
             <% } %><span id="patientId"></span></h4>
         <div id="patientDetails">
             <button id="myBtnEdit"  data-toggle="modal" data-target="#myModalEdit" onclick=modalEdit()>edit</button>
-            <h3 id="heading2">Patient Details</h3>
+            <h3 id="heading2">Doctor Details</h3>
             <label for="PhoneNo" class="detailLevels">Phone No. : <%if (doctor.phoneNumber) { %>
 				<%=doctor.phoneNumber %>
 				<% } %> </label>
@@ -90,6 +90,10 @@
             <label for="Email" class="detailLevels">Email :<%if (doctor.email) { %>
 				<%=doctor.email %>
 				<% } %></label>
+				<br>
+				<label for="Specialization" class="detailLevels">Specialization :<%if (doctor.special) { %>
+					<%=doctor.special %>
+					<% } %></label>
             <br>
             
         </div>
@@ -98,15 +102,16 @@
 
 
 				<div class="col-lg-2 col-sm-0 col-12 order-2 order-sm-3" id="pSec3">
-					<div id="Dr"><a>Hospitals</a><img src="../img/doctor-icon.png" class="Icons doctor-icon"></div>
+					<div id="Dr"><a>Available Hospitals</a><img src="../img/doctor-icon.png" class="Icons doctor-icon"></div>
 					<ul id="patientList">
 						<% for(var d of allHospitals) { %>
 						<div id="patientId">
 							<div id="patientImage"></div>
 							<div id="patientName">
 								<form action="/doctor/requestHospital/<%=d._id%>" method="POST">
-									<li><%= d.hospitalName %></li>
-									<input name="availability" type="text">
+									<li style="margin-left: 5%;"><%= d.hospitalName %></li>
+									<input name="availability" type="text"placeholder="Enter your visiting time">
+  									<input id="myBtnEdit"   type="submit" style="margin-left: 25%;">
 								</form>
 							</div>
 						</div>

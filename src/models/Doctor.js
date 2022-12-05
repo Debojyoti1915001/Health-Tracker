@@ -8,6 +8,10 @@ require('dotenv').config()
 
 const doctorSchema = mongoose.Schema(
     {
+        special:{
+            type: String,
+            trim: true,
+        },
         hospital: [
             {
                 hospitalId: {

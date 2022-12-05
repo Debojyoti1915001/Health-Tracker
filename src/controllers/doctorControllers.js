@@ -25,7 +25,7 @@ module.exports.login_get = (req, res) => {
 }
 
 module.exports.signup_post = async (req, res) => {
-    const { name, email, password, confirmPwd, phoneNumber } = req.body
+    const { name, email, password,special, confirmPwd, phoneNumber } = req.body
     // console.log('in sign up route', req.body)
     if (password != confirmPwd) {
         req.flash('error_msg', 'Passwords do not match. Try again')
@@ -58,6 +58,7 @@ module.exports.signup_post = async (req, res) => {
             short_id,
             password,
             phoneNumber,
+            special
         })
         let saveDoctor = await doctor.save()
         console.log(saveDoctor);

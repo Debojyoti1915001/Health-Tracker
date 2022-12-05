@@ -120,14 +120,14 @@ text-decoration:none;
 	top:36.5%;
 	left:14.5%;
 }
-#patientDetails{
-	position:relative;
-	top:14%;
-	left:5.5%;
-	width:88%;
-	height:30%;
-	background-color: #F3F3F3;
-	border-radius:15px;
+#patientDetails {
+    position: relative;
+    top: 10%;
+    left: 5.5%;
+    width: 89%;
+    height: 40%;
+    background-color: #F3F3F3;
+    border-radius: 15px;
 }
 #heading2{
 	font-size:90%;
