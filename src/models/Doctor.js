@@ -5,13 +5,18 @@ const bcrypt = require('bcryptjs')
 const utilities = require('../utilities/Utilities')
 const { isEmail } = require('validator')
 require('dotenv').config()
-const hospitalSchema = mongoose.Schema(
+
+const doctorSchema = mongoose.Schema(
     {
-        doctor: [
+        special:{
+            type: String,
+            trim: true,
+        },
+        hospital: [
             {
-                doctorId: {
+                hospitalId: {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: 'Doctor',
+                    ref: 'Hospital',
                 },
                 availability: {
                     type: String,
@@ -19,23 +24,22 @@ const hospitalSchema = mongoose.Schema(
                 }
             }
         ],
-        licenseNumber:{
+        permitteduser: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+            },
+        ],
+        short_id:
+        {
             type: String,
             trim: true,
-            required: [true, 'License number field cannot be empty'] 
+            required: [true, 'Short ID cannot be absent']
         },
-        hospitalName: {
+        name: {
             type: String,
-            trim: true, 
-            required:[true, 'Hospital name field cannot be empty'], 
-        },
-        address: {
-            type: String,
-            trim: true,  
-        },
-        adminName: {
-            type: String,
-            trim: true
+            trim: true,
+            required: [true, 'doctor name field cannot be empty'],
         },
         active: {
             type: Boolean,
@@ -45,13 +49,13 @@ const hospitalSchema = mongoose.Schema(
             type: String,
             trim: true,
             unique: true,
-            required: [true, 'Email field cannot be empty'], 
-            validate: [isEmail,'Email is invalid']
+            required: [true, 'Email field cannot be empty'],
+            validate: [isEmail, 'Email is invalid']
         },
         phoneNumber: {
             type: String,
             trim: true,
-            required:[true, 'Phone number field cannot be empty'], 
+            required: [true, 'Phone number field cannot be empty'],
             validate: [utilities.phoneValidator, 'Phone Number is invalid']
         },
         profilePic: {
@@ -60,23 +64,23 @@ const hospitalSchema = mongoose.Schema(
         },
         password: {
             type: String,
-            required:[true, 'Password field cannot be empty'],
+            required: [true, 'Password field cannot be empty'],
             trim: true,
             validate: [
-                ( pass ) => {
-                    return utilities.checkPasswordStrength( pass ) >= 4
+                (pass) => {
+                    return utilities.checkPasswordStrength(pass) >= 4
                 },
                 'The password must contain a mix of uppercase and lowercase alphabets along with numbers and special chacracters'
             ]
         }
     },
     {
-        timestamps : true
+        timestamps: true
     }
 )
 
 // Creating token for hospital
-hospitalSchema.methods.generateAuthToken = function generateAuthToken(maxAge){
+doctorSchema.methods.generateAuthToken = function generateAuthToken(maxAge) {
     let id = this._id
     return jwt.sign({ id }, process.env.JWT_SECRET, {
         expiresIn: maxAge,
@@ -84,7 +88,7 @@ hospitalSchema.methods.generateAuthToken = function generateAuthToken(maxAge){
 }
 
 //deleting the passsword before sending
-hospitalSchema.methods.toJSON = function () {
+doctorSchema.methods.toJSON = function () {
     const user = this
     const userObject = user.toObject()
 
@@ -92,13 +96,14 @@ hospitalSchema.methods.toJSON = function () {
     return userObject
 }
 
-hospitalSchema.statics.login = async function (email, password) {
-    const hospital = await this.findOne({ email })
-    if (hospital) {
-        const auth = await bcrypt.compare(password, hospital.password)
+doctorSchema.statics.login = async function (email, password) {
+    const doctor = await this.findOne({ email })
+    if (doctor) {
+        const auth = await bcrypt.compare(password, doctor.password)
         if (auth) {
-            return hospital
+            return doctor
         }
+        console.log('Invalid Credentials')
         throw Error('Invalid Credentials')
     }
     throw Error('Invalid Credentials')
@@ -106,7 +111,7 @@ hospitalSchema.statics.login = async function (email, password) {
 
 
 //To hash the password
-hospitalSchema.pre('save', async function (next) {
+doctorSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSalt()
     this.password = await bcrypt.hash(this.password, salt)
     next()
@@ -115,5 +120,5 @@ hospitalSchema.pre('save', async function (next) {
 
 
 
-const Hospital = mongoose.model('Hospital', hospitalSchema)
-module.exports = Hospital; 
+const Doctor = mongoose.model('Doctor', doctorSchema)
+module.exports = Doctor; 

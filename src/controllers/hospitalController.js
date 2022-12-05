@@ -1,12 +1,12 @@
 const Hospital = require('../models/Hospital'); 
 const User=require('../models/User')
 const Disease=require('../models/Disease')
-
+const Doctor=require('../models/Doctor')
 const Relations=require('../models/Relations')
 
 
 const jwt = require('jsonwebtoken')
-const { hospitalSignupMail,relationMail, nomineeMail } = require('../config/nodemailer')
+const { hospitalSignupMail,relationMail, nomineeMail,sendMailDoctor } = require('../config/nodemailer')
 const path = require('path')
 
 const { handleErrors } = require('../utilities/Utilities'); 
@@ -123,7 +123,13 @@ module.exports.profile_get = async (req, res) => {
     res.locals.hospital = req.hospital
      //console.log("hospital", req.hospital)
     const patients = await Relations.find({'isPermitted': true, 'hospitalId': req.hospital._id},"userId").populate('userId','name'); 
-    
+    const passDoctors=[];
+    const doctor=req.hospital.doctor
+
+    for(var i=0;i<doctor.length;i++){
+        var curDoctor=await Doctor.findOne({_id:doctor[i].doctorId})
+        passDoctors.push({"doctor":curDoctor,"availability": doctor[i].availability})
+    }
     // console.log("patientssssss",patients)
     res.render("./hospitalViews/profile",
     {path:'/hospital/profile',
@@ -131,6 +137,7 @@ module.exports.profile_get = async (req, res) => {
     foundUser:null,
     access:null, 
     custom_flash:null, 
+    passDoctors
       })
 }
 
@@ -181,7 +188,7 @@ module.exports.emailVerify_get = async (req, res) => {
 }
 
 module.exports.signup_post = async (req, res) => {
-    const { licenseNumber,  hospitalName, email, phoneNumber,password, confirmPwd  } = req.body
+    const { licenseNumber,  address,hospitalName, email, phoneNumber,password, confirmPwd  } = req.body
     //console.log("in sign up route",req.body);
     if (!(!password || !confirmPwd) && (password != confirmPwd)) {
         req.flash('error_msg', 'Passwords do not match. Try again')
@@ -207,7 +214,7 @@ module.exports.signup_post = async (req, res) => {
             return res.redirect('/hospital/login')
         }
 
-        const hospital = new Hospital({ licenseNumber,  hospitalName, email, phoneNumber,password  })
+        const hospital = new Hospital({ licenseNumber,  address, hospitalName, email, phoneNumber,password  })
         let saveUser = await hospital.save()
         //console.log(saveUser);
         req.flash(
@@ -389,7 +396,16 @@ module.exports.patient_search = async (req, res) =>
         //    console.log('searched patient',access);
         //    console.log("Found patient that I am passing into the ejs file", result);
            const custom_flash = "User found"; 
-            res.render("./hospitalViews/profile", {path:'/hospital/search', patients:patients,access:access, foundUser:result, custom_flash:custom_flash });
+
+           //add here
+           const passDoctors=[];
+    const doctor=req.hospital.doctor
+
+    for(var i=0;i<doctor.length;i++){
+        var curDoctor=await Doctor.findOne({_id:doctor[i].doctorId})
+        passDoctors.push({"doctor":curDoctor,"availability": doctor[i].availability})
+    }
+            res.render("./hospitalViews/profile", {passDoctors,path:'/hospital/search', patients:patients,access:access, foundUser:result, custom_flash:custom_flash });
             return 
 
         }
@@ -593,4 +609,63 @@ module.exports.picupload_post=async(req,res)=>{
         // console.log(doc);
     });
     res.redirect('/hospital/profile')
+}
+module.exports.addDoctor_post=async(req,res)=>{
+    const hospital=req.hospital
+    const userId=req.query
+    const params=new URLSearchParams(userId)
+    const short_id=params.get('id')
+    const doctor= await Doctor.findOne({'short_id':short_id})
+    sendMailDoctor()
+    res.redirect('/hospital/profile')
+}
+
+
+
+module.exports.approveDoctor_get=async(req,res)=>{
+    const hospital=req.hospital
+    const doctorId=req.params.id
+    const doctor=await Doctor.findOne({_id:doctorId})
+    
+    const availability=req.params.availability
+    
+    // console.log(req.params)
+    
+    const doctorHospitals=doctor.hospital
+    doctorHospitals.push({'hospitalId':hospital._id,'availability':availability})
+    await Doctor.findOneAndUpdate(
+        { _id: doctor._id },
+        { $set: {hospital:doctorHospitals} },
+        { new: true },
+        (err, doc) => {
+            if (err) {
+                console.log('Something wrong when updating data!')
+                req.flash('error_msg', 'Something wrong when updating data!')
+                res.redirect('/user/profile')
+            }
+
+            // console.log(doc)
+        }
+    )
+    const availableDoctors=req.hospital.doctor
+    availableDoctors.push({'doctorId':doctor._id,'availability':availability});
+    await Hospital.findOneAndUpdate(
+        { _id: hospital._id },
+        { $set: {doctor:availableDoctors} },
+        { new: true },
+        (err, doc) => {
+            if (err) {
+                console.log('Something wrong when updating data!')
+                req.flash('error_msg', 'Something wrong when updating data!')
+                res.redirect('/user/profile')
+            }
+
+            // console.log(doc)
+        }
+    )
+    // console.error(updatingHospitalsList)
+    // console.error(updatingDoctorsList)
+    res.redirect('/hospital/profile')
+
+    // res.redirect('/hospital/profile')
 }

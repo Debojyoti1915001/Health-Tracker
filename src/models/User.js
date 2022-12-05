@@ -8,6 +8,12 @@ require('dotenv').config()
 
 const userSchema = mongoose.Schema(
     {
+        permitteddoctor: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Doctor',
+            },
+        ],
         short_id: 
         {
             type: String, 

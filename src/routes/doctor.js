@@ -84,49 +84,25 @@ function checkFileType1(file, cb) {
 }
 
 //uploading finishes
-const authController = require('../controllers/authControllers')
-const { requireAuth, redirectIfLoggedIn } = require('../middleware/userAuth')
-router.get('/verify/:id', authController.emailVerify_get)
-router.get('/signup',redirectIfLoggedIn, authController.signup_get)
-router.post('/signup', authController.signup_post)
-router.get('/login', redirectIfLoggedIn, authController.login_get)
-router.post('/login', authController.login_post)
-router.get('/logout', requireAuth, authController.logout_get)
-router.get('/profile', requireAuth, authController.profile_get)
-router.post('/profile/editDetails',requireAuth,authController.editDetails_post)
-
-router.post(
-    '/profile/upload',
-    requireAuth,
-    upload.fields([{
-        name: 'medicine', maxCount: 3
-      }, {
-        name: 'document', maxCount: 3
-      }]),  
-    authController.upload_post
-)
+const doctorController = require('../controllers/doctorControllers')
+const { requireAuth, redirectIfLoggedIn } = require('../middleware/doctorAuth')
+router.get('/verify/:id', doctorController.emailVerify_get)
+router.get('/signup',redirectIfLoggedIn, doctorController.signup_get)
+router.post('/signup', doctorController.signup_post)
+router.get('/login', redirectIfLoggedIn, doctorController.login_get)
+router.post('/login', doctorController.login_post)
+router.get('/logout', requireAuth, doctorController.logout_get)
+router.get('/profile', requireAuth, doctorController.profile_get)
 
 
-router.get('/userHospital',requireAuth,authController.userHospital_get)
-
-router.get('/disease',requireAuth,authController.disease_get)
-router.get('/hospitalSearch',requireAuth,authController.hospitalSearch_get)
-router.post('/hospitalSearch',requireAuth,authController.hospitalSearch_post)
-router.get('/forgotPassword', redirectIfLoggedIn,authController.getForgotPasswordForm)
-router.post('/forgotPassword', redirectIfLoggedIn,authController.forgotPassword)
-router.get('/resetPassword/:id/:token',authController.getPasswordResetForm)
-router.post('/resetPassword/:id/:token',authController.resetPassword)
-router.get('/download/:type/pdf',requireAuth,authController.download)
-router.post(
-    '/profile/picupload',
-    requireAuth,
-    upload.single(
-            'profilePic',
-      ),  
-    authController.picupload_post
-)
-
-router.get('/approveUserDoctor/:id',requireAuth,authController.approveUserDoctor)
+router.get('/requestUser/:id', requireAuth, doctorController.requestUser_get)
 
 
+
+//hospital connection with doctor
+router.post('/requestHospital/:id', requireAuth, doctorController.requestHospital_post)
+
+router.post('/searchUser', requireAuth,doctorController.searchUser_post)
+router.get('/requestUser/:id', requireAuth,doctorController.requestUser_get)
+router.get('/hospital/:id', requireAuth,doctorController.hospital_get)
 module.exports = router

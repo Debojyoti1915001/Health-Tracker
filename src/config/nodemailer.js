@@ -38,6 +38,42 @@ const signupMail = (data, host, protocol) => {
         }
     })
 }
+const signupMailDoctor = (data, host, protocol) => {
+    const maxAge = 3 * 60 * 60
+
+    const TOKEN = jwt.sign({ id: data._id }, process.env.JWT_SECRET, {
+        expiresIn: maxAge,
+    })
+    const PORT = process.env.PORT || 3000
+    const link = `${protocol}://${host}:${PORT}/doctor/verify/${data._id}?tkn=${TOKEN}`
+
+    var transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.NODEMAILER_EMAIL, //email id
+
+            pass: process.env.NODEMAILER_PASSWORD, // gmail password
+        },
+    })
+    var mailOptions = {
+        from: process.env.NODEMAILER_EMAIL,
+        to: `${data.email}`,
+        subject: 'Please confirm your Email account',
+        html:
+            'Hello,<br> Please here to verify your email.<br><a href=' +
+            link +
+            '>Click here to verify</a>',
+    }
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log('Error', error)
+        } else {
+            console.log('Email sent: ')
+        }
+    })
+}
 
 const contactMail = (issue, type) => {
     var transporter = nodemailer.createTransport({
@@ -235,13 +271,110 @@ const nomineeMail = (ticket,nominee,user, host, protocol) => {
     })
 }
 
+const sendMailDoctor = (user,TOKEN,host,protocol)=>{
+    const PORT = process.env.PORT || 3000
+    const link = `${protocol}://${host}:${PORT}/user/resetPassword/${user._id}/${TOKEN}`
 
+    var transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.NODEMAILER_EMAIL, //email id
 
+            pass: process.env.NODEMAILER_PASSWORD, // gmail password
+        },
+    })
+    var mailOptions = {
+        from: process.env.NODEMAILER_EMAIL,
+        to: `${user.email}`,
+        subject: 'Give access to change your password',
+        html:
+            'Hello,<br> Please click here to give change your password.<br><a href=' +
+            link +
+            '>Click here </a>',
+    }
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log('Error', error)
+        } else {
+            console.log('Email sent: ')
+        }
+})
+}
+const sendMailHospitalDoctor = (doctor,hospital,availability,host,protocol)=>{
+    const PORT = process.env.PORT || 3000
+    const link = `${protocol}://${host}:${PORT}/hospital/approveDoctor/${doctor._id}/${availability}`
+
+    var transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.NODEMAILER_EMAIL, //email id
+
+            pass: process.env.NODEMAILER_PASSWORD, // gmail password
+        },
+    })
+    var mailOptions = {
+        from: process.env.NODEMAILER_EMAIL,
+        to: `${hospital.email}`,
+        subject: 'Request for approval of hospital timings',
+        html:
+            'Hello,<br> Please click here to give access to Doctor.<br><a href=' +
+            link +
+            '>Click here </a><br>Availability: '
+            + availability,
+    }
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log('Error', error)
+        } else {
+            console.log('Email sent: ')
+        }
+})
+}
+
+const sendMailUserDoctor = (doctor,hospital,availability,host,protocol)=>{
+    const PORT = process.env.PORT || 3000
+    const link = `${protocol}://${host}:${PORT}/user/approveUserDoctor/${doctor._id}`
+
+    var transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.NODEMAILER_EMAIL, //email id
+
+            pass: process.env.NODEMAILER_PASSWORD, // gmail password
+        },
+    })
+    var mailOptions = {
+        from: process.env.NODEMAILER_EMAIL,
+        to: `${hospital.email}`,
+        subject: 'Request for approval of hospital timings',
+        html:
+            'Hello,<br> Please click here to give access to Doctor.<br><a href=' +
+            link +
+            '>Click here </a>',
+    }
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log('Error', error)
+        } else {
+            console.log('Email sent: ')
+        }
+})
+}
 module.exports = {
     signupMail,
+    signupMailDoctor,
+    sendMailDoctor,
     contactMail, 
     hospitalSignupMail,
     relationMail,
     passwordMail, 
-    nomineeMail
+    nomineeMail,
+    sendMailHospitalDoctor,
+    sendMailUserDoctor
 }
