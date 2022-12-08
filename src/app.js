@@ -77,9 +77,9 @@ app.listen(PORT, () => {
 })
 
 
-//  User = require('./models/User')
+// const User = require('./models/Hospital')
 //  const databasedlt= async()=>{
-//     const user = await User.find()
+//     const user = await User.find({})
 //     user.forEach(async(data)=>{
 //          await User.findByIdAndDelete(data._id)
 //     })
@@ -100,7 +100,7 @@ app.listen(PORT, () => {
 
 
 
-//  const Relations= require('./models/Relations')
+//  const Relations= require('./models/Hospital')
 // const databasedlt= async()=>{
 //    const user = await Relations.find({_id: "60259290d60e72021ba9ed4a"})
 //    user.forEach(async(data)=>{
