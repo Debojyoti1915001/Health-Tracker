@@ -182,6 +182,7 @@
 										<div id="patientImage"></div>
 										<div id="patientName">
 											<a href="/user/userHospital?id=<%=d.hospitalId._id%>">
+											
 												<li><%= d.hospitalId.hospitalName %></li>
 											</a>
 										</div>
@@ -230,8 +231,9 @@
 						<div id="patientId1">
 							<div id="patientImage1"></div>
 							<div id="patientName1">
-								<a href="/user/userHospital?id=<%=d.hospitalId._id%>">
+								<a href="/user/chat?id=<%=d.hospitalId._id%>">
 									<li><%= d.hospitalId.hospitalName %></li>
+									<a id="id_search_button1" href="/user/chat/<%=d.hospitalId._id%>">Contact</a>
 								</a>
 							</div>
 						</div>

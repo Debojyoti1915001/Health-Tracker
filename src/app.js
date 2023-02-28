@@ -88,7 +88,7 @@ app.listen(PORT, () => {
 //  databasedlt()
 
 
-//  const User= require('./models/Nominee')
+//  const User= require('./models/Disease')
 // const databasedlt= async()=>{
 //    const user = await User.find({})
 //    user.forEach(async(data)=>{

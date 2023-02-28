@@ -128,5 +128,5 @@ router.post(
 
 router.get('/approveUserDoctor/:id',requireAuth,authController.approveUserDoctor)
 
-
+router.get('/chat/:id',requireAuth,authController.chat)
 module.exports = router

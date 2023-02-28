@@ -2,7 +2,7 @@ const User = require('../models/User')
 const Hospital = require('../models/Hospital')
 const Doctor = require('../models/Doctor')
 const jwt = require('jsonwebtoken')
-const { signupMail, passwordMail } = require('../config/nodemailer')
+const { signupMail, passwordMail,sendMailToHospital,sendMailToUser } = require('../config/nodemailer')
 const path = require('path')
 const Disease = require('../models/Disease')
 const Nominee = require('../models/Nominee')
@@ -80,10 +80,12 @@ module.exports.userHospital_get = async (req, res) => {
         req.flash('error_msg', 'user not found')
         res.redirect('/user/profile')
     }
+    const passDoctors=[] //logic to be written TODO Debo
     res.render('./userViews/profile', {
         path: '/user/userHospital',
         hospitals,
         hospital,
+        passDoctors
     })
 }
 
@@ -627,6 +629,19 @@ module.exports.approveUserDoctor = async (req, res) => {
         await Doctor.findOneAndUpdate({permitteduser})
     }
 
+    res.redirect('/user/profile')
+}
+
+module.exports.chat = async (req, res) => {
+    const id=req.params.id//hospital
+    const useremail = req.user.email
+    const user=req.user
+    const hospital = await Hospital.findOne({
+        _id: id,
+    })
+    const hospitalemail =hospital.email
+    sendMailToHospital(hospitalemail,user,hospital,req.hostname,req.protocol)
+    sendMailToUser(useremail,user,hospital,req.hostname,req.protocol)
     res.redirect('/user/profile')
 }
 

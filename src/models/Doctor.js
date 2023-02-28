@@ -8,6 +8,11 @@ require('dotenv').config()
 
 const doctorSchema = mongoose.Schema(
     {
+        
+        ratings:[{
+            type: Number,
+            trim: true,
+        }],
         special:{
             type: String,
             trim: true,
