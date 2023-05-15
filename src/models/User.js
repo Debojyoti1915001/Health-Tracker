@@ -8,6 +8,19 @@ require('dotenv').config()
 
 const userSchema = mongoose.Schema(
     {
+        bagItems: [
+            {
+              productId: { type: mongoose.Schema.Types.ObjectId, ref: "product" },
+              quantity: { type: Number, default: 1 },
+              // price: { type: Number, default: 0 },
+            },
+          ],
+          wishListItems: [
+            {
+              productId: { type: mongoose.Schema.Types.ObjectId, ref: "product" },
+              // price: { type: Number, default: 0 },
+            },
+          ],
         permitteddoctor: [
             {
                 type: mongoose.Schema.Types.ObjectId,

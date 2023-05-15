@@ -25,13 +25,19 @@
 <div class="col-lg-8 col-sm-8 col-12 order-1 order-sm-2" id="pSec2">
     <div id="sub1">
         <img src="../img/CoverPhoto.png" id="coverImg">
-        <a href="#"><img src="../img/ProfilePic.png"  id="profileImg"></a>
+        <a href="#"><img src="../img/ProfilePic.png" id="profileImg"></a>
         <a href="#"><img src="../img/camera.png" id="Camera"></a>
-        <h5 id="name"><%= hospital.hospitalName %></h5>
+        <h5 id="name">
+            <%= hospital.hospitalName %>
+        </h5>
+
+        <div class='stars-rating' style="--rating: <%=val%>;">
+            <div class="rating"></div>
+        </div>
         <div id="patientDetails">
             <h3 id="heading2">Hospital Details</h3>
             <!-- <input type="text" class="detailFields" id="bloodGroup"> -->
-        
+
             <label for="Address" class="detailLevels">Address : <%=hospital.address %> </label>
             <!-- <input type="text" class="detailFields" id="Address"> -->
             <br>
@@ -41,14 +47,32 @@
             <label for="Email" class="detailLevels">Email : <%=hospital.email %> </label>
             <!-- <input type="email" class="detailFields" id="Email"> -->
             <br>
-            <h3 id="heading2">Available Doctors:</h3>
-            <% for(var d of passDoctors) { %>
-            <label for="Doctors" class="detailLevels"> <%=d.doctor.name %> </label>
-            <label for="Doctors" class="detailLevels"> <%=d.doctor.special %> </label>
-            <label for="Doctors" class="detailLevels"> <%=d.availability%> </label>
+
+            <!-- debo -->
+            <a href="/ecom/products/<%=hospital.email%>">Visit Ecommerce Website</a><br>
+            <a id="myBtnRate" data-toggle="modal" onclick=openModal() data-target="#myModalRate">Click Here To Check Doctors Availability</a>
+            <div id="myModalRate" class="modal fadeIn">
+                <h3 id="heading2">Available Doctors:</h3>
+                <div class="months">
+                    <!-- First Month -->
+                    <% for(var d of passDoctors) { %>
+                    <table>
+                      <!-- <caption class="one"> -->
+                       <h3><%=d.doctor.special %></h3>
+                      <!-- </caption> -->
+                      <tr>
+                        <td><%=d.doctor.name %></td>
+                        <td><%=d.availability%></td>
+                      </tr>
+                      
+                    </table>
+                    <%}%>
+                  </div>
+            </div>
+
             <br>
-            <%}%>
-            <br>
+            
+                <br>
         </div>
     </div>
 </div>

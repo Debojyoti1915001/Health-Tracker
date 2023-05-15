@@ -85,7 +85,8 @@ module.exports.userHospital_get = async (req, res) => {
         path: '/user/userHospital',
         hospitals,
         hospital,
-        passDoctors
+        passDoctors,
+        val:0
     })
 }
 
@@ -104,6 +105,7 @@ module.exports.login_get = (req, res) => {
 
 module.exports.signup_post = async (req, res) => {
     const { name, email, password, confirmPwd, phoneNumber } = req.body
+    
     const nominee = null
     console.log('in sign up route', req.body)
     if (password != confirmPwd) {
@@ -138,6 +140,7 @@ module.exports.signup_post = async (req, res) => {
             phoneNumber,
             short_id,
             nominee,
+            
         })
         let saveUser = await user.save()
         //console.log(saveUser);
@@ -645,3 +648,37 @@ module.exports.chat = async (req, res) => {
     res.redirect('/user/profile')
 }
 
+module.exports.rate = async (req, res) => {
+    const id=req.params.id//hospital
+    
+    const hospital = await Hospital.findOne({
+        _id: id,
+    })
+    console.log(hospital)
+    var ratings=hospital.ratings
+    if(ratings.size===0){
+        ratings=[0,0,0,0,0]
+    }
+    // console.log(req.body)
+    if(req.body.rating==1){
+        // console.log("yes")
+        ratings[0]=ratings[0]+1
+    }
+    if(req.body.rating==2){
+        ratings[1]=ratings[1]+1
+    }
+    if(req.body.rating==3){
+        ratings[2]=ratings[2]+1
+    }
+    if(req.body.rating==4){
+        ratings[3]=ratings[3]+1
+    }
+    if(req.body.rating==5){
+        ratings[4]=ratings[4]+1
+    }
+    const uhospital=await Hospital.findByIdAndUpdate(hospital._id, {
+        ratings
+    })
+    // console.log(uhospital,"hiii")
+    res.redirect('/user/profile')
+}

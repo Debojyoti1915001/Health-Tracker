@@ -123,7 +123,7 @@
 			</form>
 		</div>
 	</div>
-
+	
 	<!--Profile Part-->
 
 	<div class="desktop-view">
@@ -231,11 +231,45 @@
 						<div id="patientId1">
 							<div id="patientImage1"></div>
 							<div id="patientName1">
-								<a href="/user/chat?id=<%=d.hospitalId._id%>">
+								<a href="/user/userHospital?id=<%=d.hospitalId._id%>">
 									<li><%= d.hospitalId.hospitalName %></li>
-									<a id="id_search_button1" href="/user/chat/<%=d.hospitalId._id%>">Contact</a>
 								</a>
 							</div>
+						</div>
+						<a id="id_search_button1" href="/user/chat/<%=d.hospitalId._id%>">Contact</a>
+						<a id="myBtnRate"data-toggle="modal" onclick=openModal() data-target="#myModalRate">Rate us</a>
+						<div id="myModalRate" class="modal fadeIn">
+							<main>
+								
+								<form class="rate" method="POST" action="/user/rate/<%=d.hospitalId._id%>">
+								  <h1>Rate Us</h1>
+								  <p>Please rate our hospital</p>
+							  
+								  <div class="rating">
+									<input type="radio" name="rating" id="rating-1" value="1">
+									<input type="radio" name="rating" id="rating-2" value="2">
+									<input type="radio" name="rating" id="rating-3" value="3">
+									<input type="radio" name="rating" id="rating-4" value="4">
+									<input type="radio" name="rating" id="rating-5" value="5">
+							  
+									<div class="rating__box">
+									  <label for="rating-1" class="rating__star">&starf;</label>
+									  <label for="rating-2" class="rating__star">&starf;</label>
+									  <label for="rating-3" class="rating__star">&starf;</label>
+									  <label for="rating-4" class="rating__star">&starf;</label>
+									  <label for="rating-5" class="rating__star">&starf;</label>
+							  
+									</div>
+								  </div>
+							  
+								  
+							  
+								  <div class="action-group">
+									<input type="submit" value="Submit">
+									<span><button type="button" class="cancel fadeOut" data-dismiss="modal">Close</button></span>
+								  </div>
+								</form>
+							  </main>
 						</div>
 						<% } %>
 					</ul>
