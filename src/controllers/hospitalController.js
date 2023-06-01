@@ -130,7 +130,9 @@ module.exports.profile_get = async (req, res) => {
 
     for(var i=0;i<doctor.length;i++){
         var curDoctor=await Doctor.findOne({_id:doctor[i].doctorId})
-        passDoctors.push({"doctor":curDoctor,"availability": doctor[i].availability})
+        var rateD=curDoctor.ratings
+        var valDoc=((1*rateD[0])+(2*rateD[1])+(3*rateD[2])+(4*rateD[3])+(5*rateD[4]))/(rateD[0]+rateD[1]+rateD[2]+rateD[3]+rateD[4])
+        passDoctors.push({"doctor":curDoctor,"availability": doctor[i].availability,"val":valDoc})
     }
     console.log(rate)
     res.render("./hospitalViews/profile",

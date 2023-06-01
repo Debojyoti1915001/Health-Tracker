@@ -12,6 +12,8 @@
 	<link rel="stylesheet" href="../css/edit-form.css">
 	
 	<link rel="stylesheet" href="../css/Profile.css">
+	<link rel="stylesheet" href="../css/Profile.css">
+	<link rel="stylesheet" href="../css/hospitalProfile.css">
 
 	<title>Profile Page</title>
 	<link rel="shortcut icon" href="../img/medical1.png">
@@ -136,11 +138,10 @@
 							<a href="/user/profile">Profile</a>
 							<img src="../img/profile.png" class="Icons profile-icon">
 						</div>
-						<div class="<%= path === '/user/disease' ? 'lists active-list' : 'lists' %>">
+						<div clas1s="<%= path === '/user/disease' ? 'lists active-list' : 'lists' %>">
 							<a onclick="myFunction()" class="dropbtn">Disease</a>
 							<img src="../img/disease.png" class="Icons">
 							<div id="myDropdown" class="dropdown-content">
-
 								<% for(var d of user.disease) { %>
 									<a class="dropdown-item" href="/user/disease?id=<%= d._id %>"><span class="dropAnchor"><%= d.name %></span></a>
 								<% } %>

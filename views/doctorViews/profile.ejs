@@ -14,7 +14,7 @@
 	<link rel="stylesheet" href="../css/edit-form.css">
 
 	<link rel="stylesheet" href="../css/Profile.css">
-
+	<link rel="stylesheet" href="../css/hospitalProfile.css">
 	<title>Profile Page</title>
 	<link rel="shortcut icon" href="../img/medical1.png">
 </head>
@@ -107,7 +107,10 @@
 												</symbol>
 											</defs>
 										</svg>
-										<div class="comment-stars">
+										<!-- <div class='stars-rating' style="--rating: <%=val%>;">
+											<div class="rating"></div>
+										</div> -->
+										<!-- <div class="comment-stars">
 
 											<input class="comment-stars-input" type="radio" name="rating" value="5"
 												id="rating-5">
@@ -161,8 +164,11 @@
 												for="rating-0.5"><svg class="icon icon-star-half">
 													<use xlink:href="#icon-star-half"></use>
 												</svg></label>
+										</div> -->
+										<br><br><br>
+										<div class='stars-rating' style="--rating: <%=val%>;">
+											<div class="rating"></div>
 										</div>
-
 										<div id="patientDetails">
 											<button id="myBtnEdit" data-toggle="modal" data-target="#myModalEdit"
 												onclick=modalEdit()>edit</button>
@@ -260,6 +266,7 @@
 												</main>
 											</div>
 										</div>
+										
 						</div>
 					</div>
 

@@ -13,6 +13,18 @@ body {
     --color-gold: #ffc41f;
     --color-gold-light: #ffd560;
   }
+  /* .ecommerce:link, .ecommerce:visited {
+	background-color: #019DFA;
+	color: white;
+	padding: 14px 25px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+  }
+  
+  .ecommerce:hover, .ecommerce:active {
+	background-color: #019DFA;
+  } */
 #profileBody{
 	margin-top:0;
 	display:flex;
@@ -125,10 +137,10 @@ text-decoration:none;
 }
 #patientDetails {
     position: relative;
-    top: 10%;
+    top: 0%;
     left: 5.5%;
     width: 89%;
-    height: 40%;
+    height: 36%;
     background-color: #F3F3F3;
     border-radius: 15px;
 }
@@ -1015,6 +1027,7 @@ display: none ;
 	width: fit-content;
 	margin: 40px auto;
   }
+  
   caption {
 	font-weight: bold;
 	text-align: center;
@@ -1032,6 +1045,6 @@ display: none ;
 	width: 300px;
   }
   td:last-child {
-	width: 150px;
+	width: 700px;
   }
   

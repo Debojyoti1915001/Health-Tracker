@@ -188,7 +188,7 @@
 
   async function addtoWishList(prodId) {
     console.log(prodId);
-    const result = await fetch("/ecom/wishlist/add", {
+    const result = await fetch("/wishlist/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -203,7 +203,7 @@
 
   async function addtoCart(prodId) {
     console.log(prodId);
-    const result = await fetch("/ecom/bag/addtoCart", {
+    const result = await fetch("/bag/addtoCart", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -71,7 +71,7 @@ app.use('/',indexRoutes)
 app.use('/hospital',hospitalRoutes)
 app.use('/user',userRoutes)
 app.use('/doctor', doctorRoutes)
-app.use('/ecom', ecomRoutes)
+app.use('/', ecomRoutes)
 //Start the server
 app.listen(PORT, () => {
     console.log('Server listening on port', PORT)

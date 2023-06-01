@@ -49,8 +49,8 @@
             <br>
 
             <!-- debo -->
-            <a href="/ecom/products/<%=hospital.email%>">Visit Ecommerce Website</a><br>
-            <a id="myBtnRate" data-toggle="modal" onclick=openModal() data-target="#myModalRate">Click Here To Check Doctors Availability</a>
+            <a href="/products/<%=hospital.email%>" class="clinic clinic1">Visit Ecommerce Website</a><br>
+            <a class="clinic clinic1" id="myBtnRate" data-toggle="modal" onclick=openModal() data-target="#myModalRate">Click Here To Check Doctors Availability</a>
             <div id="myModalRate" class="modal fadeIn">
                 <h3 id="heading2">Available Doctors:</h3>
                 <div class="months">
@@ -63,6 +63,42 @@
                       <tr>
                         <td><%=d.doctor.name %></td>
                         <td><%=d.availability%></td>
+                        <td><h3>Current Ratings</h3>
+                            <div class='stars-rating' style="--rating: <%=d.val%>;">
+                                <div class="rating"></div>
+                            </div>
+                        </td>
+                        <td>
+                                    
+                                    <form class="rate" method="POST" action="/user/rateDoctor/<%=d.doctor._id%>">
+                                      <h1>Rate Doctor</h1>
+                                      <p>Please rate your doctor</p>
+                                  
+                                      <div class="rating">
+                                        <input type="radio" name="rating" id="rating-1" value="1">
+                                        <input type="radio" name="rating" id="rating-2" value="2">
+                                        <input type="radio" name="rating" id="rating-3" value="3">
+                                        <input type="radio" name="rating" id="rating-4" value="4">
+                                        <input type="radio" name="rating" id="rating-5" value="5">
+                                  
+                                        <div class="rating__box">
+                                          <label for="rating-1" class="rating__star">&starf;</label>
+                                          <label for="rating-2" class="rating__star">&starf;</label>
+                                          <label for="rating-3" class="rating__star">&starf;</label>
+                                          <label for="rating-4" class="rating__star">&starf;</label>
+                                          <label for="rating-5" class="rating__star">&starf;</label>
+                                  
+                                        </div>
+                                      </div>
+                                  
+                                      
+                                  
+                                      <div class="action-group">
+                                        <input type="submit" value="Submit">
+                                        <span><button type="button" class="cancel fadeOut" data-dismiss="modal">Close</button></span>
+                                      </div>
+                                    </form>
+                                  </td>
                       </tr>
                       
                     </table>

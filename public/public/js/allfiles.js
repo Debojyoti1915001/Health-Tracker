@@ -4,13 +4,13 @@ function sort(x) {
 
   function generateData(event) {
     if (menu.value == "1") {
-      window.location.href = `/ecom/products/sorthtol/${x}/`;
+      window.location.href = `/products/sorthtol/${x}/`;
     } else if (menu.value == "2") {
-      window.location.href = `/ecom/products/sortltoh/${x}/`;
+      window.location.href = `/products/sortltoh/${x}/`;
     } else if (menu.value == "3") {
-      window.location.href = `/ecom/products/sort/${x}/`;
+      window.location.href = `/products/sort/${x}/`;
     } else if (menu.value == "4") {
-      window.location.href = `/ecom/products/type/${x}/`;
+      window.location.href = `/products/type/${x}/`;
     }
   }
 }
@@ -20,23 +20,23 @@ sort("tshirt");
 
 // funtions for mens page
 function filter(x, y) {
-  window.location.href = `/ecom/products/type/${y}/${x}`;
+  window.location.href = `/products/type/${y}/${x}`;
 }
 
 function priceFilter(x, y, z) {
-  window.location.href = `/ecom/products/price/${x}/${y}/${z}/`;
+  window.location.href = `/products/price/${x}/${y}/${z}/`;
 }
 
 function colorFilter(x, y) {
-  window.location.href = `/ecom/products/color/${x}/${y}/`;
+  window.location.href = `/products/color/${x}/${y}/`;
 }
 
 function nextPage(id) {
-  window.location.href = `/ecom/moda/${id}`;
+  window.location.href = `/moda/${id}`;
 }
 
 function changePage(x) {
-  window.location.href = `/ecom/moda/${x}`;
+  window.location.href = `/moda/${x}`;
 }
 
 // functions for womens sarees

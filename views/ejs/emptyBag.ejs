@@ -33,9 +33,9 @@
     </a>
 
       <div class="headerCenter">
-        <a href="/ecom/bag">BAG --------</a>
-        <a href="/ecom/address">ADDRESS --------</a>
-        <a href="/ecom/payment">PAYMENT</a>
+        <a href="/bag">BAG --------</a>
+        <a href="/address">ADDRESS --------</a>
+        <a href="/payment">PAYMENT</a>
       </div>
       <div class="headerRight">
         <img
@@ -112,6 +112,6 @@
   function redirect() {
     let userObj = JSON.parse(localStorage.getItem("token"));
     let userId = userObj.id;
-    window.location.href = `/ecom/wishlist/${userId}`;
+    window.location.href = `/wishlist/${userId}`;
   }
 </script>

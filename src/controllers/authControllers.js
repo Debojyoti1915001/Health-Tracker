@@ -80,13 +80,22 @@ module.exports.userHospital_get = async (req, res) => {
         req.flash('error_msg', 'user not found')
         res.redirect('/user/profile')
     }
+    const rate=hospital.ratings
+    const val=((1*rate[0])+(2*rate[1])+(3*rate[2])+(4*rate[3])+(5*rate[4]))/(rate[0]+rate[1]+rate[2]+rate[3]+rate[4])
     const passDoctors=[] //logic to be written TODO Debo
+    const doctor=hospital.doctor
+    for(var i=0;i<doctor.length;i++){
+        var curDoctor=await Doctor.findOne({_id:doctor[i].doctorId})
+        var rateD=curDoctor.ratings
+        var valDoc=((1*rateD[0])+(2*rateD[1])+(3*rateD[2])+(4*rateD[3])+(5*rateD[4]))/(rateD[0]+rateD[1]+rateD[2]+rateD[3]+rateD[4])
+        passDoctors.push({"doctor":curDoctor,"availability": doctor[i].availability,"val":valDoc})
+    }
     res.render('./userViews/profile', {
         path: '/user/userHospital',
         hospitals,
         hospital,
         passDoctors,
-        val:0
+        val
     })
 }
 
@@ -680,5 +689,39 @@ module.exports.rate = async (req, res) => {
         ratings
     })
     // console.log(uhospital,"hiii")
+    res.redirect('/user/profile')
+}
+module.exports.rateDoctor = async (req, res) => {
+    const id=req.params.id//hospital
+    
+    const doctor = await Doctor.findOne({
+        _id: id,
+    })
+    console.log(doctor)
+    var ratings=doctor.ratings
+    if(ratings.size===0){
+        ratings=[0,0,0,0,0]
+    }
+    // console.log(req.body)
+    if(req.body.rating==1){
+        // console.log("yes")
+        ratings[0]=ratings[0]+1
+    }
+    if(req.body.rating==2){
+        ratings[1]=ratings[1]+1
+    }
+    if(req.body.rating==3){
+        ratings[2]=ratings[2]+1
+    }
+    if(req.body.rating==4){
+        ratings[3]=ratings[3]+1
+    }
+    if(req.body.rating==5){
+        ratings[4]=ratings[4]+1
+    }
+    const udoctor=await Doctor.findByIdAndUpdate(doctor._id, {
+        ratings
+    })
+    console.log(udoctor,"hiii")
     res.redirect('/user/profile')
 }

@@ -89,7 +89,7 @@
     const userObj = JSON.parse(localStorage.getItem("token"));
     const userId = userObj.id;
 
-    const result = await fetch("/ecom/wishlist/deleteItem", {
+    const result = await fetch("/wishlist/deleteItem", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -103,6 +103,6 @@
     window.location.reload();
   }
   function redirect(x) {
-    window.location.href = `/ecom/moda/${x}`;
+    window.location.href = `/moda/${x}`;
   }
 </script>

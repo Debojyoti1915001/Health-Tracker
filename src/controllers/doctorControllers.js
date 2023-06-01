@@ -197,10 +197,13 @@ module.exports.profile_get = async (req, res) => {
         // .populate('disease', 'name')
         // .execPopulate()
         //634c4a9238b22e5c64847214 hospital
+        var rateD=doctor.ratings
+        var val=((1*rateD[0])+(2*rateD[1])+(3*rateD[2])+(4*rateD[3])+(5*rateD[4]))/(rateD[0]+rateD[1]+rateD[2]+rateD[3]+rateD[4])
         res.render('./doctorViews/profile', {
             allHospitals,
             doctor,
-            hospitals
+            hospitals,
+            val
         })
     } catch (err) {
         res.send(err)
