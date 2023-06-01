@@ -1,5 +1,5 @@
 {
-  "name": "barter-base",
+  "name": "health-tracker",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Debojyoti1915001/BarterBase.git"
+    "url": "git+https://github.com/Debojyoti1915001/Health-Tracker.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Debojyoti1915001/BarterBase/issues"
+    "url": "https://github.com/Debojyoti1915001/Health-Tracker/issues"
   },
-  "homepage": "https://github.com/Debojyoti1915001/BarterBase#readme",
+  "homepage": "https://github.com/Debojyoti1915001/Health-Tracker#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "connect-flash": "^0.1.1",

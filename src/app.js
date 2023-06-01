@@ -64,9 +64,14 @@ app.use((req, res, next) => {
 //Routes
 const indexRoutes = require('./routes/index')
 const userRoutes = require('./routes/user')
+const hospitalRoutes = require('./routes/hospital')
+const doctorRoutes = require('./routes/doctor')
+const ecomRoutes = require('./routes/ecom')
 app.use('/',indexRoutes)
+app.use('/hospital',hospitalRoutes)
 app.use('/user',userRoutes)
-
+app.use('/doctor', doctorRoutes)
+app.use('/', ecomRoutes)
 //Start the server
 app.listen(PORT, () => {
     console.log('Server listening on port', PORT)

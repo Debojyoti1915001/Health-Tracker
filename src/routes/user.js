@@ -93,24 +93,30 @@ router.get('/login', redirectIfLoggedIn, authController.login_get)
 router.post('/login', authController.login_post)
 router.get('/logout', requireAuth, authController.logout_get)
 router.get('/profile', requireAuth, authController.profile_get)
+router.post('/profile/editDetails',requireAuth,authController.editDetails_post)
 
 router.post(
     '/profile/upload',
     requireAuth,
     upload.fields([{
+        name: 'medicine', maxCount: 3
+      }, {
         name: 'document', maxCount: 3
       }]),  
     authController.upload_post
 )
 
 
+router.get('/userHospital',requireAuth,authController.userHospital_get)
 
-
+router.get('/disease',requireAuth,authController.disease_get)
+router.get('/hospitalSearch',requireAuth,authController.hospitalSearch_get)
+router.post('/hospitalSearch',requireAuth,authController.hospitalSearch_post)
 router.get('/forgotPassword', redirectIfLoggedIn,authController.getForgotPasswordForm)
 router.post('/forgotPassword', redirectIfLoggedIn,authController.forgotPassword)
 router.get('/resetPassword/:id/:token',authController.getPasswordResetForm)
 router.post('/resetPassword/:id/:token',authController.resetPassword)
-
+router.get('/download/:type/pdf',requireAuth,authController.download)
 router.post(
     '/profile/picupload',
     requireAuth,
@@ -120,6 +126,10 @@ router.post(
     authController.picupload_post
 )
 
+router.get('/approveUserDoctor/:id',requireAuth,authController.approveUserDoctor)
 
+router.get('/chat/:id',requireAuth,authController.chat)
+router.post('/rate/:id',requireAuth,authController.rate)
+router.post('/rateDoctor/:id',requireAuth,authController.rateDoctor)
 
 module.exports = router

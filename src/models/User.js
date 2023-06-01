@@ -8,7 +8,25 @@ require('dotenv').config()
 
 const userSchema = mongoose.Schema(
     {
-        
+        bagItems: [
+            {
+              productId: { type: mongoose.Schema.Types.ObjectId, ref: "product" },
+              quantity: { type: Number, default: 1 },
+              // price: { type: Number, default: 0 },
+            },
+          ],
+          wishListItems: [
+            {
+              productId: { type: mongoose.Schema.Types.ObjectId, ref: "product" },
+              // price: { type: Number, default: 0 },
+            },
+          ],
+        permitteddoctor: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Doctor',
+            },
+        ],
         short_id: 
         {
             type: String, 
@@ -20,12 +38,6 @@ const userSchema = mongoose.Schema(
             trim: true,
             required: [true, 'Name field cannot be empty']
         },
-        document: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Document',
-            },
-        ],
         email: {
             type: String,
             trim: true,
@@ -56,11 +68,22 @@ const userSchema = mongoose.Schema(
             trim: true,
             validate: [utilities.phoneValidator, 'Phone number is invalid'],
         },
+        disease: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Disease',
+            },
+        ],
         address:{
             type:String
         },
         bloodGroup:{
             type:String
+        },
+        nominee:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Nominee'
+
         },
         profilePic: {
             type: String,

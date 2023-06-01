@@ -1,0 +1,114 @@
+<!-- <link rel="stylesheet" href="../css/edit-form.css"> -->
+<!-- <div id="myModal-dp-edit" class="modal-dp-edit">
+
+    <div class="modal-content-dp-edit">
+      <span class="close-dp-edit">&times;</span>
+      <div class="col-md-6">
+        <form class="form-group"  method="POST" action="/hospital/profile/picupload" enctype="multipart/form-data">
+            <label>Upload Image</label>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <span class="btn btn-default btn-file">
+                        Browse… <input type="file" id="profilePic"name="profilePic">
+                    </span>
+                </span>
+                <input type="text" class="form-control" readonly>
+            </div>
+            <img id='img-upload' style="max-width: 30%;"/>
+            <button type="save" class="save-dp-edit">Save</button>
+        </form>
+    </div>
+    </div>
+  </div> -->
+
+
+<div class="col-lg-8 col-sm-8 col-12 order-1 order-sm-2" id="pSec2">
+    <div id="sub1">
+        <img src="../img/CoverPhoto.png" id="coverImg">
+        <a href="#"><img src="../img/ProfilePic.png" id="profileImg"></a>
+        <a href="#"><img src="../img/camera.png" id="Camera"></a>
+        <h5 id="name">
+            <%= hospital.hospitalName %>
+        </h5>
+
+        <div class='stars-rating' style="--rating: <%=val%>;">
+            <div class="rating"></div>
+        </div>
+        <div id="patientDetails">
+            <h3 id="heading2">Hospital Details</h3>
+            <!-- <input type="text" class="detailFields" id="bloodGroup"> -->
+
+            <label for="Address" class="detailLevels">Address : <%=hospital.address %> </label>
+            <!-- <input type="text" class="detailFields" id="Address"> -->
+            <br>
+            <label for="PhoneNo" class="detailLevels">Phone No. : <%=hospital.phoneNumber %> </label>
+            <!-- <input type="tel" class="detailFields" id="PhoneNo"> -->
+            <br>
+            <label for="Email" class="detailLevels">Email : <%=hospital.email %> </label>
+            <!-- <input type="email" class="detailFields" id="Email"> -->
+            <br>
+
+            <!-- debo -->
+            <a href="/products/<%=hospital.email%>" class="clinic clinic1">Visit Ecommerce Website</a><br>
+            <a class="clinic clinic1" id="myBtnRate" data-toggle="modal" onclick=openModal() data-target="#myModalRate">Click Here To Check Doctors Availability</a>
+            <div id="myModalRate" class="modal fadeIn">
+                <h3 id="heading2">Available Doctors:</h3>
+                <div class="months">
+                    <!-- First Month -->
+                    <% for(var d of passDoctors) { %>
+                    <table>
+                      <!-- <caption class="one"> -->
+                       <h3><%=d.doctor.special %></h3>
+                      <!-- </caption> -->
+                      <tr>
+                        <td><%=d.doctor.name %></td>
+                        <td><%=d.availability%></td>
+                        <td><h3>Current Ratings</h3>
+                            <div class='stars-rating' style="--rating: <%=d.val%>;">
+                                <div class="rating"></div>
+                            </div>
+                        </td>
+                        <td>
+                                    
+                                    <form class="rate" method="POST" action="/user/rateDoctor/<%=d.doctor._id%>">
+                                      <h1>Rate Doctor</h1>
+                                      <p>Please rate your doctor</p>
+                                  
+                                      <div class="rating">
+                                        <input type="radio" name="rating" id="rating-1" value="1">
+                                        <input type="radio" name="rating" id="rating-2" value="2">
+                                        <input type="radio" name="rating" id="rating-3" value="3">
+                                        <input type="radio" name="rating" id="rating-4" value="4">
+                                        <input type="radio" name="rating" id="rating-5" value="5">
+                                  
+                                        <div class="rating__box">
+                                          <label for="rating-1" class="rating__star">&starf;</label>
+                                          <label for="rating-2" class="rating__star">&starf;</label>
+                                          <label for="rating-3" class="rating__star">&starf;</label>
+                                          <label for="rating-4" class="rating__star">&starf;</label>
+                                          <label for="rating-5" class="rating__star">&starf;</label>
+                                  
+                                        </div>
+                                      </div>
+                                  
+                                      
+                                  
+                                      <div class="action-group">
+                                        <input type="submit" value="Submit">
+                                        <span><button type="button" class="cancel fadeOut" data-dismiss="modal">Close</button></span>
+                                      </div>
+                                    </form>
+                                  </td>
+                      </tr>
+                      
+                    </table>
+                    <%}%>
+                  </div>
+            </div>
+
+            <br>
+            
+                <br>
+        </div>
+    </div>
+</div>
