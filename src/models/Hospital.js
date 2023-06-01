@@ -7,6 +7,9 @@ const { isEmail } = require('validator')
 require('dotenv').config()
 const hospitalSchema = mongoose.Schema(
     {
+        ratings:[{
+            type:Number
+        }],
         doctor: [
             {
                 doctorId: {

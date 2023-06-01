@@ -8,7 +8,24 @@ require('dotenv').config()
 
 const doctorSchema = mongoose.Schema(
     {
-        special:{
+
+        ratings: [{
+            type: Number,
+            trim: true,
+        }],
+        usersRated: [
+            {
+                userId: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'User',
+                },
+                current: {
+                    type: Number,
+                    trim: true,
+                }
+            }
+        ],
+        special: {
             type: String,
             trim: true,
         },
@@ -62,6 +79,20 @@ const doctorSchema = mongoose.Schema(
             type: String,
             trim: true,
         },
+        clinic: [{
+            name: {
+                type: String,
+                trim: true,
+            },
+            time: {
+                type: String,
+                trim: true,
+            },
+            address: {
+                type: String,
+                trim: true,
+            }
+        }],
         password: {
             type: String,
             required: [true, 'Password field cannot be empty'],

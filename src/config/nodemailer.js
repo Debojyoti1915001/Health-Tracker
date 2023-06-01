@@ -366,6 +366,68 @@ const sendMailUserDoctor = (doctor,hospital,availability,host,protocol)=>{
         }
 })
 }
+const sendMailToHospital = (email,user,hospital,host,protocol)=>{
+    
+    const link = `${protocol}://${host}:5050/chat.html?username=${hospital.email}11&room=${user._id}`
+
+    var transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.NODEMAILER_EMAIL, //email id
+
+            pass: process.env.NODEMAILER_PASSWORD, // gmail password
+        },
+    })
+    var mailOptions = {
+        from: process.env.NODEMAILER_EMAIL,
+        to: `${email}`,
+        subject: 'Click The Below Link To Join Chat',
+        html:
+            '<a href=' +
+            link +
+            '>Click here to join</a>',
+    }
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log('Error', error)
+        } else {
+            console.log('Email sent: ')
+        }
+    })
+}
+const sendMailToUser = (email,user,hospital,host,protocol)=>{
+    
+    const link = `${protocol}://${host}:5050/chat.html?username=${user.email}&room=${user._id}`
+
+    var transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.NODEMAILER_EMAIL, //email id
+
+            pass: process.env.NODEMAILER_PASSWORD, // gmail password
+        },
+    })
+    var mailOptions = {
+        from: process.env.NODEMAILER_EMAIL,
+        to: `${email}`,
+        subject: 'Click The Below Link To Join Chat',
+        html:
+            '<a href=' +
+            link +
+            '>Click here to join</a>',
+    }
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log('Error', error)
+        } else {
+            console.log('Email sent: ')
+        }
+    })
+}
 module.exports = {
     signupMail,
     signupMailDoctor,
@@ -376,5 +438,7 @@ module.exports = {
     passwordMail, 
     nomineeMail,
     sendMailHospitalDoctor,
-    sendMailUserDoctor
+    sendMailUserDoctor,
+    sendMailToHospital,
+    sendMailToUser,
 }

@@ -47,8 +47,13 @@
         <input type="tel" placeholder="Enter doctor license number" class="inputDetails" id="SignupPhone" name="licenseNumber" required /><br>
         
         <label class="label1">Specialization*</label><br>
-        <input type="text" placeholder="Enter doctor specialization" class="inputDetails" id="SignupPhone" name="special" required /><br>
-        
+        <select class="inputDetails" id="SignupPhone" name="special" required>
+          <option value="neurologist" >Neurologist</option>
+          <option value="dentist">Dentist</option>
+          <option value="opthalmologist">Opthalmologist</option>
+          <option value="cardiologist">Cardiologist</option>
+          <option value="orthopeidic">Orthopeidic</option>
+        </select>
         <label class="label1">Create password*</label><br>
 
         <input type="password" placeholder="Password" class="inputDetails password-input" id="password-input" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?.+\-^#&])[A-Za-z\d@$!%*?.+\-^#&]{8,}" name="password">

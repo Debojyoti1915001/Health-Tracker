@@ -12,6 +12,8 @@
 	<link rel="stylesheet" href="../css/edit-form.css">
 	
 	<link rel="stylesheet" href="../css/Profile.css">
+	<link rel="stylesheet" href="../css/Profile.css">
+	<link rel="stylesheet" href="../css/hospitalProfile.css">
 
 	<title>Profile Page</title>
 	<link rel="shortcut icon" href="../img/medical1.png">
@@ -123,7 +125,7 @@
 			</form>
 		</div>
 	</div>
-
+	
 	<!--Profile Part-->
 
 	<div class="desktop-view">
@@ -136,11 +138,10 @@
 							<a href="/user/profile">Profile</a>
 							<img src="../img/profile.png" class="Icons profile-icon">
 						</div>
-						<div class="<%= path === '/user/disease' ? 'lists active-list' : 'lists' %>">
+						<div clas1s="<%= path === '/user/disease' ? 'lists active-list' : 'lists' %>">
 							<a onclick="myFunction()" class="dropbtn">Disease</a>
 							<img src="../img/disease.png" class="Icons">
 							<div id="myDropdown" class="dropdown-content">
-
 								<% for(var d of user.disease) { %>
 									<a class="dropdown-item" href="/user/disease?id=<%= d._id %>"><span class="dropAnchor"><%= d.name %></span></a>
 								<% } %>
@@ -182,6 +183,7 @@
 										<div id="patientImage"></div>
 										<div id="patientName">
 											<a href="/user/userHospital?id=<%=d.hospitalId._id%>">
+											
 												<li><%= d.hospitalId.hospitalName %></li>
 											</a>
 										</div>
@@ -234,6 +236,41 @@
 									<li><%= d.hospitalId.hospitalName %></li>
 								</a>
 							</div>
+						</div>
+						<a id="id_search_button1" href="/user/chat/<%=d.hospitalId._id%>">Contact</a>
+						<a id="myBtnRate"data-toggle="modal" onclick=openModal() data-target="#myModalRate">Rate us</a>
+						<div id="myModalRate" class="modal fadeIn">
+							<main>
+								
+								<form class="rate" method="POST" action="/user/rate/<%=d.hospitalId._id%>">
+								  <h1>Rate Us</h1>
+								  <p>Please rate our hospital</p>
+							  
+								  <div class="rating">
+									<input type="radio" name="rating" id="rating-1" value="1">
+									<input type="radio" name="rating" id="rating-2" value="2">
+									<input type="radio" name="rating" id="rating-3" value="3">
+									<input type="radio" name="rating" id="rating-4" value="4">
+									<input type="radio" name="rating" id="rating-5" value="5">
+							  
+									<div class="rating__box">
+									  <label for="rating-1" class="rating__star">&starf;</label>
+									  <label for="rating-2" class="rating__star">&starf;</label>
+									  <label for="rating-3" class="rating__star">&starf;</label>
+									  <label for="rating-4" class="rating__star">&starf;</label>
+									  <label for="rating-5" class="rating__star">&starf;</label>
+							  
+									</div>
+								  </div>
+							  
+								  
+							  
+								  <div class="action-group">
+									<input type="submit" value="Submit">
+									<span><button type="button" class="cancel fadeOut" data-dismiss="modal">Close</button></span>
+								  </div>
+								</form>
+							  </main>
 						</div>
 						<% } %>
 					</ul>

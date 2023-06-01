@@ -128,5 +128,8 @@ router.post(
 
 router.get('/approveUserDoctor/:id',requireAuth,authController.approveUserDoctor)
 
+router.get('/chat/:id',requireAuth,authController.chat)
+router.post('/rate/:id',requireAuth,authController.rate)
+router.post('/rateDoctor/:id',requireAuth,authController.rateDoctor)
 
 module.exports = router

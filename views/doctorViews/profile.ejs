@@ -2,17 +2,19 @@
 <html>
 
 <head>
+
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
 	<script src="https://use.fontawesome.com/67912d8e88.js"></script>
-    
+
 	<link rel="stylesheet" href="../css/NavBar.css">
+	<!-- <link rel="stylesheet" href="../css/Doctor.css"> -->
 	<link rel="stylesheet" href="../css/modal.css">
 	<link rel="stylesheet" href="../css/edit-form.css">
-	
-	<link rel="stylesheet" href="../css/Profile.css">
 
+	<link rel="stylesheet" href="../css/Profile.css">
+	<link rel="stylesheet" href="../css/hospitalProfile.css">
 	<title>Profile Page</title>
 	<link rel="shortcut icon" href="../img/medical1.png">
 </head>
@@ -21,412 +23,582 @@
 
 	<%- include('../partials/navbar'); %>
 
-	<!--Profile Part-->
+		<!--Profile Part-->
 
-	<div class="desktop-view">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-12"><%- include('../partials/message'); %></div>
-				<div class="col-lg-2 col-sm-4 col-12 order-3 order-sm-1" id="pSec1">
-					<div id="leftPanel">
-						<% for(var d of hospitals) { %>
-						<div class="lists">
-							<a href="/doctor/hospital/<%= d.hos._id %>"><%= d.hos.hospitalName %></a>
-							<a href="#"><%= d.ab %></a>
-							<img src="../img/appointment.png" class="Icons">
+		<div class="desktop-view">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-12"><%- include('../partials/message'); %></div>
+					<div class="col-lg-2 col-sm-4 col-12 order-3 order-sm-1" id="pSec1">
+						<div id="leftPanel">
+							<% for(var d of hospitals) { %>
+								<div class="lists">
+									<a href="/doctor/hospital/<%= d.hos._id %>">
+										<%= d.hos.hospitalName %>
+									</a>
+									<a href="#">
+										<%= d.ab %>
+									</a>
+									<img src="../img/appointment.png" class="Icons">
+								</div>
+								<% } %>
+
 						</div>
-						<% } %>
-						
 					</div>
-				</div>
-				<link rel="stylesheet" href="../css/edit-form.css">
+					<link rel="stylesheet" href="../css/edit-form.css">
 
-<div id="myModal-dp-edit" class="modal-dp-edit">
+					<div id="myModal-dp-edit" class="modal-dp-edit">
 
-    <!-- Modal content -->
-    <div class="modal-content-dp-edit">
-      <span class="close-dp-edit">&times;</span>
-      <div class="col-md-6">
-        <form class="form-group"  method="POST" action="/user/profile/picupload" enctype="multipart/form-data">
-            <label>Upload Image</label>
-            <div class="input-group">
-                <span class="input-group-btn">
-                    <span class="btn btn-default btn-file">
-                        Browse… <input type="file" id="profilePic"name="profilePic">
-                    </span>
-                </span>
-                <input type="text" class="form-control" placeholder="Choose a file" readonly>
-            </div>
-            <img id='img-upload' style="max-width: 30%;"/>
-            <button type="save" class="save-dp-edit">Save</button>
-        </form>
-    </div>
-    </div>
-  </div>
-
-
-<div class="col-lg-8 col-sm-8 col-12 order-1 order-sm-2" id="pSec2">
-    <div id="sub1">
-        <img src="../img/CoverPhoto.png" id="coverImg">
-        <% if (doctor.profilePic){%>
-        <a href="#"><img src="../uploads/<%=doctor.email%>/profilePic/<%=doctor.profilePic%>"  id="profileImg"></a>
-        <%}else{%>
-            <a href="#"><img src="../img/ProfilePic.png"  id="profileImg"></a>
-            <%}%>
-        <a href="#"><img src="../img/camera.png" id="Camera"></a>
-        <h5 id="name"><%if (doctor.name) { %>
-            <%=doctor.name %>
-            <% } %></h5>
-        <h4 id="heading1">Doctor Id-:<%if (doctor.short_id) { %>
-            <%=doctor.short_id %>
-            <% } %><span id="patientId"></span></h4>
-        <div id="patientDetails">
-            <button id="myBtnEdit"  data-toggle="modal" data-target="#myModalEdit" onclick=modalEdit()>edit</button>
-            <h3 id="heading2">Doctor Details</h3>
-            <label for="PhoneNo" class="detailLevels">Phone No. : <%if (doctor.phoneNumber) { %>
-				<%=doctor.phoneNumber %>
-				<% } %> </label>
-            <br>
-            <label for="Email" class="detailLevels">Email :<%if (doctor.email) { %>
-				<%=doctor.email %>
-				<% } %></label>
-				<br>
-				<label for="Specialization" class="detailLevels">Specialization :<%if (doctor.special) { %>
-					<%=doctor.special %>
-					<% } %></label>
-            <br>
-            
-        </div>
-    </div>
-</div>
-
-
-				<div class="col-lg-2 col-sm-0 col-12 order-2 order-sm-3" id="pSec3">
-					<div id="Dr"><a>Available Hospitals</a><img src="../img/doctor-icon.png" class="Icons doctor-icon"></div>
-					<ul id="patientList">
-						<% for(var d of allHospitals) { %>
-						<div id="patientId">
-							<div id="patientImage"></div>
-							<div id="patientName">
-								<form action="/doctor/requestHospital/<%=d._id%>" method="POST">
-									<li style="margin-left: 5%;"><%= d.hospitalName %></li>
-									<input name="availability" type="text"placeholder="Enter your visiting time">
-  									<input id="myBtnEdit"   type="submit" style="margin-left: 25%;">
+						<!-- Modal content -->
+						<div class="modal-content-dp-edit">
+							<span class="close-dp-edit">&times;</span>
+							<div class="col-md-6">
+								<form class="form-group" method="POST" action="/user/profile/picupload"
+									enctype="multipart/form-data">
+									<label>Upload Image</label>
+									<div class="input-group">
+										<span class="input-group-btn">
+											<span class="btn btn-default btn-file">
+												Browse… <input type="file" id="profilePic" name="profilePic">
+											</span>
+										</span>
+										<input type="text" class="form-control" placeholder="Choose a file" readonly>
+									</div>
+									<img id='img-upload' style="max-width: 30%;" />
+									<button type="save" class="save-dp-edit">Save</button>
 								</form>
 							</div>
 						</div>
-						<% } %>
-					</ul>
+					</div>
+
+
+					<div class="col-lg-8 col-sm-8 col-12 order-1 order-sm-2" id="pSec2">
+						<div id="sub1">
+							<img src="../img/CoverPhoto.png" id="coverImg">
+							<% if (doctor.profilePic){%>
+								<a href="#"><img src="../uploads/<%=doctor.email%>/profilePic/<%=doctor.profilePic%>"
+										id="profileImg"></a>
+								<%}else{%>
+									<a href="#"><img src="../img/ProfilePic.png" id="profileImg"></a>
+									<%}%>
+										<a href="#"><img src="../img/camera.png" id="Camera"></a>
+										<h5 id="name">
+											<%if (doctor.name) { %>
+												<%=doctor.name %>
+													<% } %>
+										</h5>
+										<h4 id="heading1">Doctor Id-:<%if (doctor.short_id) { %>
+												<%=doctor.short_id %>
+													<% } %><span id="patientId"></span></h4>
+										<svg aria-hidden="true"
+											style="position: absolute; width: 0; height: 0; overflow: hidden;"
+											version="1.1" xmlns="http://www.w3.org/2000/svg"
+											xmlns:xlink="http://www.w3.org/1999/xlink">
+											<defs>
+												<symbol id="icon-star" viewBox="0 0 26 28">
+													<path
+														d="M26 10.109c0 0.281-0.203 0.547-0.406 0.75l-5.672 5.531 1.344 7.812c0.016 0.109 0.016 0.203 0.016 0.313 0 0.406-0.187 0.781-0.641 0.781-0.219 0-0.438-0.078-0.625-0.187l-7.016-3.687-7.016 3.687c-0.203 0.109-0.406 0.187-0.625 0.187-0.453 0-0.656-0.375-0.656-0.781 0-0.109 0.016-0.203 0.031-0.313l1.344-7.812-5.688-5.531c-0.187-0.203-0.391-0.469-0.391-0.75 0-0.469 0.484-0.656 0.875-0.719l7.844-1.141 3.516-7.109c0.141-0.297 0.406-0.641 0.766-0.641s0.625 0.344 0.766 0.641l3.516 7.109 7.844 1.141c0.375 0.063 0.875 0.25 0.875 0.719z">
+													</path>
+												</symbol>
+												<symbol id="icon-star-half" viewBox="0 0 13 28">
+													<path
+														d="M13 0.5v20.922l-7.016 3.687c-0.203 0.109-0.406 0.187-0.625 0.187-0.453 0-0.656-0.375-0.656-0.781 0-0.109 0.016-0.203 0.031-0.313l1.344-7.812-5.688-5.531c-0.187-0.203-0.391-0.469-0.391-0.75 0-0.469 0.484-0.656 0.875-0.719l7.844-1.141 3.516-7.109c0.141-0.297 0.406-0.641 0.766-0.641v0z">
+													</path>
+												</symbol>
+											</defs>
+										</svg>
+										<!-- <div class='stars-rating' style="--rating: <%=val%>;">
+											<div class="rating"></div>
+										</div> -->
+										<!-- <div class="comment-stars">
+
+											<input class="comment-stars-input" type="radio" name="rating" value="5"
+												id="rating-5">
+											<label class="comment-stars-view" for="rating-5"><svg
+													class="icon icon-star">
+													<use xlink:href="#icon-star"></use>
+												</svg></label>
+											<input class="comment-stars-input" type="radio" name="rating" value="4.5"
+												id="rating-4.5" checked="checked"> <label
+												class="comment-stars-view is-half" for="rating-4.5"><svg
+													class="icon icon-star-half">
+													<use xlink:href="#icon-star-half"></use>
+												</svg></label>
+											<input class="comment-stars-input" type="radio" name="rating" value="4"
+												id="rating-4"> <label class="comment-stars-view" for="rating-4"><svg
+													class="icon icon-star">
+													<use xlink:href="#icon-star"></use>
+												</svg></label>
+											<input class="comment-stars-input" type="radio" name="rating" value="3.5"
+												id="rating-3.5"> <label class="comment-stars-view is-half"
+												for="rating-3.5"><svg class="icon icon-star-half">
+													<use xlink:href="#icon-star-half"></use>
+												</svg></label>
+											<input class="comment-stars-input" type="radio" name="rating" value="3"
+												id="rating-3"> <label class="comment-stars-view" for="rating-3"><svg
+													class="icon icon-star">
+													<use xlink:href="#icon-star"></use>
+												</svg></label>
+											<input class="comment-stars-input" type="radio" name="rating" value="2.5"
+												id="rating-2.5"> <label class="comment-stars-view is-half"
+												for="rating-2.5"><svg class="icon icon-star-half">
+													<use xlink:href="#icon-star-half"></use>
+												</svg></label>
+											<input class="comment-stars-input" type="radio" name="rating" value="2"
+												id="rating-2"> <label class="comment-stars-view" for="rating-2"><svg
+													class="icon icon-star">
+													<use xlink:href="#icon-star"></use>
+												</svg></label>
+											<input class="comment-stars-input" type="radio" name="rating" value="1.5"
+												id="rating-1.5"> <label class="comment-stars-view is-half"
+												for="rating-1.5"><svg class="icon icon-star-half">
+													<use xlink:href="#icon-star-half"></use>
+												</svg></label>
+											<input class="comment-stars-input" type="radio" name="rating" value="1"
+												id="rating-1"> <label class="comment-stars-view" for="rating-1"><svg
+													class="icon icon-star">
+													<use xlink:href="#icon-star"></use>
+												</svg></label>
+											<input class="comment-stars-input" type="radio" name="rating" value="0.5"
+												id="rating-0.5"> <label class="comment-stars-view is-half"
+												for="rating-0.5"><svg class="icon icon-star-half">
+													<use xlink:href="#icon-star-half"></use>
+												</svg></label>
+										</div> -->
+										<br><br><br>
+										<div class='stars-rating' style="--rating: <%=val%>;">
+											<div class="rating"></div>
+										</div>
+										<div id="patientDetails">
+											<button id="myBtnEdit" data-toggle="modal" data-target="#myModalEdit"
+												onclick=modalEdit()>edit</button>
+											<h3 id="heading2">Doctor Details</h3>
+											<label for="PhoneNo" class="detailLevels">Phone No. : <%if
+													(doctor.phoneNumber) { %>
+													<%=doctor.phoneNumber %>
+														<% } %> </label>
+											<br>
+											<label for="Email" class="detailLevels">Email :<%if (doctor.email) { %>
+													<%=doctor.email %>
+														<% } %></label>
+											<br>
+											<label for="Specialization" class="detailLevels">Specialization :<%if
+													(doctor.special) { %>
+													<%=doctor.special %>
+														<% } %></label>
+											<br>
+											<a class="clinic clinic1" id="myBtnRate" data-toggle="modal"
+												onclick=openModal() data-target="#myModalRate1">Add Clinic</a>
+											<div id="myModalRate1" class="modal fadeIn">
+												<main>
+
+													<form class="rate" method="POST" action="/doctor/clinic">
+														<h1>Add Your Clinic Details</h1>
+														<!-- <p>Please rate our hospital</p> -->
+
+														<input type="text" placeholder="Enter Name"
+															class="mobile-preview shadow floating-animate" name="name"
+															id="id_search1">
+														<input type="text" placeholder="Enter Time"
+															class="mobile-preview shadow floating-animate" name="time"
+															id="id_search1">
+														<input type="text" placeholder="Enter Address"
+															class="mobile-preview shadow floating-animate" name="address"
+															id="id_search1">
+														<div class="action-group">
+															<input type="submit" value="Submit">
+															<span><button type="button" class="cancel fadeOut"
+																	data-dismiss="modal">Close</button></span>
+														</div>
+													</form>
+												</main>
+											</div>
+											<a class="clinic clinic1" id="myBtnRate" data-toggle="modal"
+												onclick=openModal() data-target="#myModalRate2">Timetable</a>
+											<div id="myModalRate2" class="modal fadeIn">
+												<main>
+													<form class="rate" method="POST" action="/doctor/clinic">
+														<h2>Clinic Details</h2>
+													<% for(var d of doctor.clinic) { %>
+														<!-- <table> -->
+														  <!-- <caption class="one"> -->
+														   <h3><%=d.name %></h3>
+														  <!-- </caption> -->
+														  <!-- <tr> -->
+															<%=d.time %><br>
+															<%=d.address%>
+														  <!-- </tr> -->
+														  
+														<!-- </table> -->
+														<%}%>
+													</form>
+													<br>
+													<br>
+													<br>
+													<br>
+													<form class="rate" method="POST" action="/doctor/clinic">
+														<h2>Hospital Details</h2>
+													<% for(var d of hospitals) { %>
+														<h3><%=d.hos.hospitalName %></h3>
+														  <!-- </caption> -->
+														  <!-- <tr> -->
+															<%=d.ab %><br>
+															<%=d.hos.address%>
+														<!-- <div class="lists">
+															<a href="/doctor/hospital/<%= d.hos._id %>">
+																<%= d.hos.hospitalName %>
+															</a>
+															<a href="/doctor/hospital/<%= d.hos._id %>">
+																<%= d.hos.address %>
+															</a>
+															<a href="#">
+																<%= d.ab %>
+															</a>
+															<img src="../img/appointment.png" class="Icons">
+														</div> -->
+														<%}%>
+													</form>
+													<div class="action-group">
+
+														<span><button type="button" class="cancel fadeOut"
+																data-dismiss="modal">Close</button></span>
+													</div>
+												</main>
+											</div>
+										</div>
+										
+						</div>
+					</div>
+
+
+					<div class="col-lg-2 col-sm-0 col-12 order-2 order-sm-3" id="pSec3">
+						<div id="Dr"><a>Available Hospitals</a><img src="../img/doctor-icon.png"
+								class="Icons doctor-icon"></div>
+						<ul id="patientList">
+							<% for(var d of allHospitals) { %>
+								<div id="patientId">
+									<div id="patientImage"></div>
+									<div id="patientName">
+										<form action="/doctor/requestHospital/<%=d._id%>" method="POST">
+											<li style="margin-left: 5%;">
+												<%= d.hospitalName %>
+											</li>
+											<input name="availability" type="text"
+												placeholder="Enter your visiting time">
+											<input id="myBtnEdit" type="submit" style="margin-left: 25%;">
+										</form>
+									</div>
+								</div>
+								<% } %>
+						</ul>
+					</div>
+				</div>
 			</div>
+
+
 		</div>
-	</div>
-	
 
-	</div>
+		<%- include('../partials/footer'); %>
 
-	<%- include('../partials/footer'); %>
+			<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+			<script src="../js/sideNav.js"></script>
+			<script src="../js/profilePage.js"></script>
+			<script src="../js/sideNav.js"></script>
+			<script src="../js/modal.js"></script>
+			<script>
+				var test = document.querySelector('input');
+			</script>
+			<script>
+				function myFunction() {
+					document.getElementById("myDropdown").classList.toggle("show");
+				}
 
-	<script src="../js/sideNav.js"></script>
-	<script src="../js/profilePage.js"></script>
-	<script src="../js/sideNav.js"></script>
-	<script src="../js/modal.js"></script>
-	<script>
-		var test = document.querySelector('input');
-	</script>
-	<script>
-		function myFunction() {
-			document.getElementById("myDropdown").classList.toggle("show");
-		}
-
-		// Close the dropdown menu if the user clicks outside of it
-		document.body.onclick = function (event) {
-			if (!event.target.matches('.dropbtn')) {
-				var dropdowns = document.getElementsByClassName("dropdown-content");
-				var i;
-				for (i = 0; i < dropdowns.length; i++) {
-					var openDropdown = dropdowns[i];
-					if (openDropdown.classList.contains('show')) {
-						openDropdown.classList.remove('show');
+				// Close the dropdown menu if the user clicks outside of it
+				document.body.onclick = function (event) {
+					if (!event.target.matches('.dropbtn')) {
+						var dropdowns = document.getElementsByClassName("dropdown-content");
+						var i;
+						for (i = 0; i < dropdowns.length; i++) {
+							var openDropdown = dropdowns[i];
+							if (openDropdown.classList.contains('show')) {
+								openDropdown.classList.remove('show');
+							}
+						}
 					}
 				}
-			}
-		}
 
-	</script>
-	<script>
-		function myFunctionMobile() {
-			document.getElementById("myDropdownMobile").classList.toggle("show");
-		}
+			</script>
+			<script>
+				function myFunctionMobile() {
+					document.getElementById("myDropdownMobile").classList.toggle("show");
+				}
 
-		// Close the dropdown menu if the user clicks outside of it
-		document.body.onclick = function (event) {
-			if (!event.target.matches('.dropbtn')) {
-				var dropdowns = document.getElementsByClassName("dropdown-content");
-				var i;
-				for (i = 0; i < dropdowns.length; i++) {
-					var openDropdown = dropdowns[i];
-					if (openDropdown.classList.contains('show')) {
-						openDropdown.classList.remove('show');
+				// Close the dropdown menu if the user clicks outside of it
+				document.body.onclick = function (event) {
+					if (!event.target.matches('.dropbtn')) {
+						var dropdowns = document.getElementsByClassName("dropdown-content");
+						var i;
+						for (i = 0; i < dropdowns.length; i++) {
+							var openDropdown = dropdowns[i];
+							if (openDropdown.classList.contains('show')) {
+								openDropdown.classList.remove('show');
+							}
+						}
 					}
 				}
-			}
-		}
 
-	</script>
-	
+			</script>
 
-	
-    <script>
-		function modalEdit(){
-    var modal = document.getElementById("myModalEdit");
-    var btn = document.getElementById("myBtnEdit");
-    var span = document.getElementsByClassName("cancel-edit")[0];
-    btn.onclick = function () {
-        modal.style.display = "block";
-    }
-    span.onclick = function () {
-        modal.style.display = "none";
-    }
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-    var span = document.getElementsByClassName("save1-edit")[0];
-    btn.onclick = function () {
-        modal.style.display = "block";
-    }
-    span.onclick = function () {
-        modal.style.display = "none";
-    }
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-} 
-</script>
-<script>
-    $(window, document, undefined).ready(function () {
-        $('input').blur(function () {
-            var $this = $(this);
-            if ($this.val())
-                $this.addClass('used');
-            else
-                $this.removeClass('used');
-        });
-        var $ripples = $('.ripples');
-        $ripples.on('click.Ripples', function (e) {
-            var $this = $(this);
-            var $offset = $this.parent().offset();
-            var $circle = $this.find('.ripplesCircle');
-            var x = e.pageX - $offset.left;
-            var y = e.pageY - $offset.top;
-            $circle.css({
-                top: y + 'px',
-                left: x + 'px'
-            });
-            $this.addClass('is-active');
-        });
-        $ripples.on('animationend webkitAnimationEnd mozAnimationEnd oanimationend MSAnimationEnd', function (e) {
-            $(this).removeClass('is-active');
-        });
-    });
 
-</script>
-<script>
-	$(document).ready( function() {
-    	$(document).on('change', '.btn-file :file', function() {
-		var input = $(this),
-			label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-		input.trigger('fileselect', [label]);
-		});
 
-		$('.btn-file :file').on('fileselect', function(event, label) {
-		    
-		    var input = $(this).parents('.input-group').find(':text'),
-		        log = label;
-		    
-		    if( input.length ) {
-		        input.val(log);
-		    } else {
-		        if( log ) alert(log);
-		    }
-	    
-		});
-		function readURL(input) {
-		    if (input.files && input.files[0]) {
-		        var reader = new FileReader();
-		        
-		        reader.onload = function (e) {
-		            $('#img-upload').attr('src', e.target.result);
-		        }
-		        
-		        reader.readAsDataURL(input.files[0]);
-		    }
-		}
+			<script>
+				function modalEdit() {
+					var modal = document.getElementById("myModalEdit");
+					var btn = document.getElementById("myBtnEdit");
+					var span = document.getElementsByClassName("cancel-edit")[0];
+					btn.onclick = function () {
+						modal.style.display = "block";
+					}
+					span.onclick = function () {
+						modal.style.display = "none";
+					}
+					window.onclick = function (event) {
+						if (event.target == modal) {
+							modal.style.display = "none";
+						}
+					}
+					var span = document.getElementsByClassName("save1-edit")[0];
+					btn.onclick = function () {
+						modal.style.display = "block";
+					}
+					span.onclick = function () {
+						modal.style.display = "none";
+					}
+					window.onclick = function (event) {
+						if (event.target == modal) {
+							modal.style.display = "none";
+						}
+					}
+				} 
+			</script>
+			<script>
+				$(window, document, undefined).ready(function () {
+					$('input').blur(function () {
+						var $this = $(this);
+						if ($this.val())
+							$this.addClass('used');
+						else
+							$this.removeClass('used');
+					});
+					var $ripples = $('.ripples');
+					$ripples.on('click.Ripples', function (e) {
+						var $this = $(this);
+						var $offset = $this.parent().offset();
+						var $circle = $this.find('.ripplesCircle');
+						var x = e.pageX - $offset.left;
+						var y = e.pageY - $offset.top;
+						$circle.css({
+							top: y + 'px',
+							left: x + 'px'
+						});
+						$this.addClass('is-active');
+					});
+					$ripples.on('animationend webkitAnimationEnd mozAnimationEnd oanimationend MSAnimationEnd', function (e) {
+						$(this).removeClass('is-active');
+					});
+				});
 
-		$("#imgInp").change(function(){
-		    readURL(this);
-		}); 	
-	});
-</script>
-<script>
-var modal = document.getElementById("myModal-dp-edit");
+			</script>
+			<script>
+				$(document).ready(function () {
+					$(document).on('change', '.btn-file :file', function () {
+						var input = $(this),
+							label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+						input.trigger('fileselect', [label]);
+					});
 
-var btn = document.getElementById("Camera");
+					$('.btn-file :file').on('fileselect', function (event, label) {
 
-var span = document.getElementsByClassName("close-dp-edit")[0];
+						var input = $(this).parents('.input-group').find(':text'),
+							log = label;
 
-btn.onclick = function() {
-  modal.style.display = "block";
-}
+						if (input.length) {
+							input.val(log);
+						} else {
+							if (log) alert(log);
+						}
 
-span.onclick = function() {
-  modal.style.display = "none";
-}
+					});
+					function readURL(input) {
+						if (input.files && input.files[0]) {
+							var reader = new FileReader();
 
-  var span = document.getElementsByClassName("save-dp-edit")[0];
+							reader.onload = function (e) {
+								$('#img-upload').attr('src', e.target.result);
+							}
 
-btn.onclick = function() {
-  modal.style.display = "block";
-}
+							reader.readAsDataURL(input.files[0]);
+						}
+					}
 
-span.onclick = function() {
-  modal.style.display = "none";
-}
+					$("#imgInp").change(function () {
+						readURL(this);
+					});
+				});
+			</script>
+			<script>
+				var modal = document.getElementById("myModal-dp-edit");
 
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-} 
+				var btn = document.getElementById("Camera");
 
-</script>
-<script>
-    $(document).bind('dragover', function (e) {
-        var dropZone = $('.zone'),
-            timeout = window.dropZoneTimeout;
-        if (!timeout) {
-            dropZone.addClass('in');
-        } else {
-            clearTimeout(timeout);
-        }
-        var found = false,
-            node = e.target;
-        do {
-            if (node === dropZone[0]) {
-                found = true;
-                break;
-            }
-            node = node.parentNode;
-        } while (node != null);
-        if (found) {
-            dropZone.addClass('hover');
-        } else {
-            dropZone.removeClass('hover');
-        }
-        window.dropZoneTimeout = setTimeout(function () {
-            window.dropZoneTimeout = null;
-            dropZone.removeClass('in hover');
-        }, 100);
-    });
-</script>
-<script>
-	// Get the modal
-var modal = document.getElementById("myModal-dp-edit");
-// Get the button that opens the modal
-var btn = document.getElementById("Camera");
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close-dp-edit")[0];
-// When the user clicks on the button, open the modal
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-// When the user clicks anywhere outside of the modal, close it
-  var span = document.getElementsByClassName("save-dp-edit")[0];
-// When the user clicks on the button, open the modal
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-} 
-</script>
+				var span = document.getElementsByClassName("close-dp-edit")[0];
 
-<script>
-	$(window, document, undefined).ready(function () {
-		$('input').blur(function () {
-			var $this = $(this);
-			if ($this.val())
-				$this.addClass('used');
-			else
-				$this.removeClass('used');
-		});
-		var $ripples = $('.ripples');
-		$ripples.on('click.Ripples', function (e) {
-			var $this = $(this);
-			var $offset = $this.parent().offset();
-			var $circle = $this.find('.ripplesCircle');
-			var x = e.pageX - $offset.left;
-			var y = e.pageY - $offset.top;
-			$circle.css({
-				top: y + 'px',
-				left: x + 'px'
-			});
-			$this.addClass('is-active');
-		});
-		$ripples.on('animationend webkitAnimationEnd mozAnimationEnd oanimationend MSAnimationEnd', function (e) {
-			$(this).removeClass('is-active');
-		});
-	});
-</script>
-<script>
-	$(document).bind('dragover', function (e) {
-		var dropZone = $('.zone'),
-			timeout = window.dropZoneTimeout;
-		if (!timeout) {
-			dropZone.addClass('in');
-		} else {
-			clearTimeout(timeout);
-		}
-		var found = false,
-			node = e.target;
-		do {
-			if (node === dropZone[0]) {
-				found = true;
-				break;
-			}
-			node = node.parentNode;
-		} while (node != null);
-		if (found) {
-			dropZone.addClass('hover');
-		} else {
-			dropZone.removeClass('hover');
-		}
-		window.dropZoneTimeout = setTimeout(function () {
-			window.dropZoneTimeout = null;
-			dropZone.removeClass('in hover');
-		}, 100);
-	});
-</script>
+				btn.onclick = function () {
+					modal.style.display = "block";
+				}
+
+				span.onclick = function () {
+					modal.style.display = "none";
+				}
+
+				var span = document.getElementsByClassName("save-dp-edit")[0];
+
+				btn.onclick = function () {
+					modal.style.display = "block";
+				}
+
+				span.onclick = function () {
+					modal.style.display = "none";
+				}
+
+				window.onclick = function (event) {
+					if (event.target == modal) {
+						modal.style.display = "none";
+					}
+				}
+
+			</script>
+			<script>
+				$(document).bind('dragover', function (e) {
+					var dropZone = $('.zone'),
+						timeout = window.dropZoneTimeout;
+					if (!timeout) {
+						dropZone.addClass('in');
+					} else {
+						clearTimeout(timeout);
+					}
+					var found = false,
+						node = e.target;
+					do {
+						if (node === dropZone[0]) {
+							found = true;
+							break;
+						}
+						node = node.parentNode;
+					} while (node != null);
+					if (found) {
+						dropZone.addClass('hover');
+					} else {
+						dropZone.removeClass('hover');
+					}
+					window.dropZoneTimeout = setTimeout(function () {
+						window.dropZoneTimeout = null;
+						dropZone.removeClass('in hover');
+					}, 100);
+				});
+			</script>
+			<script>
+				// Get the modal
+				var modal = document.getElementById("myModal-dp-edit");
+				// Get the button that opens the modal
+				var btn = document.getElementById("Camera");
+				// Get the <span> element that closes the modal
+				var span = document.getElementsByClassName("close-dp-edit")[0];
+				// When the user clicks on the button, open the modal
+				btn.onclick = function () {
+					modal.style.display = "block";
+				}
+				// When the user clicks on <span> (x), close the modal
+				span.onclick = function () {
+					modal.style.display = "none";
+				}
+				// When the user clicks anywhere outside of the modal, close it
+				var span = document.getElementsByClassName("save-dp-edit")[0];
+				// When the user clicks on the button, open the modal
+				btn.onclick = function () {
+					modal.style.display = "block";
+				}
+				// When the user clicks on <span> (x), close the modal
+				span.onclick = function () {
+					modal.style.display = "none";
+				}
+				// When the user clicks anywhere outside of the modal, close it
+				window.onclick = function (event) {
+					if (event.target == modal) {
+						modal.style.display = "none";
+					}
+				} 
+			</script>
+
+			<script>
+				$(window, document, undefined).ready(function () {
+					$('input').blur(function () {
+						var $this = $(this);
+						if ($this.val())
+							$this.addClass('used');
+						else
+							$this.removeClass('used');
+					});
+					var $ripples = $('.ripples');
+					$ripples.on('click.Ripples', function (e) {
+						var $this = $(this);
+						var $offset = $this.parent().offset();
+						var $circle = $this.find('.ripplesCircle');
+						var x = e.pageX - $offset.left;
+						var y = e.pageY - $offset.top;
+						$circle.css({
+							top: y + 'px',
+							left: x + 'px'
+						});
+						$this.addClass('is-active');
+					});
+					$ripples.on('animationend webkitAnimationEnd mozAnimationEnd oanimationend MSAnimationEnd', function (e) {
+						$(this).removeClass('is-active');
+					});
+				});
+			</script>
+			<script>
+				$(document).bind('dragover', function (e) {
+					var dropZone = $('.zone'),
+						timeout = window.dropZoneTimeout;
+					if (!timeout) {
+						dropZone.addClass('in');
+					} else {
+						clearTimeout(timeout);
+					}
+					var found = false,
+						node = e.target;
+					do {
+						if (node === dropZone[0]) {
+							found = true;
+							break;
+						}
+						node = node.parentNode;
+					} while (node != null);
+					if (found) {
+						dropZone.addClass('hover');
+					} else {
+						dropZone.removeClass('hover');
+					}
+					window.dropZoneTimeout = setTimeout(function () {
+						window.dropZoneTimeout = null;
+						dropZone.removeClass('in hover');
+					}, 100);
+				});
+			</script>
 
 </body>
 
 </html>
-
-

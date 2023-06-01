@@ -25,8 +25,8 @@ module.exports.login_get = (req, res) => {
 }
 
 module.exports.signup_post = async (req, res) => {
-    const { name, email, password,special, confirmPwd, phoneNumber } = req.body
-    // console.log('in sign up route', req.body)
+    const { name, email, password, special, confirmPwd, phoneNumber } = req.body
+    console.log('in sign up route', req.body)
     if (password != confirmPwd) {
         req.flash('error_msg', 'Passwords do not match. Try again')
         res.status(400).redirect('/doctor/login')
@@ -52,8 +52,10 @@ module.exports.signup_post = async (req, res) => {
         }
         const short_id = generateShortId(name, phoneNumber);
         // console.log('Short ID generated is: ', short_id)
+        const ratings = [0, 0, 0, 0, 0]
         const doctor = new Doctor({
             email,
+            ratings,
             name,
             short_id,
             password,
@@ -182,22 +184,26 @@ module.exports.profile_get = async (req, res) => {
     try {
         const doctor = req.doctor
         const allHospitals = await Hospital.find({})
-        const hospital=doctor.hospital
+        const hospital = doctor.hospital
+        const clinic=doctor.clinic
         // console.log(hospital)
-        const hospitals=[]
-        for(var i=0;i<hospital.length;i++){
-            var currentHospital=await Hospital.findOne({_id:hospital[i].hospitalId})
-            hospitals.push({"hos":currentHospital,"ab":hospital[i].availability})
+        const hospitals = []
+        for (var i = 0; i < hospital.length; i++) {
+            var currentHospital = await Hospital.findOne({ _id: hospital[i].hospitalId })
+            hospitals.push({ "hos": currentHospital, "ab": hospital[i].availability,address:hospital[i].address })
         }
         console.log(hospitals)
         // const userDisease = await req.user
         // .populate('disease', 'name')
         // .execPopulate()
         //634c4a9238b22e5c64847214 hospital
+        var rateD=doctor.ratings
+        var val=((1*rateD[0])+(2*rateD[1])+(3*rateD[2])+(4*rateD[3])+(5*rateD[4]))/(rateD[0]+rateD[1]+rateD[2]+rateD[3]+rateD[4])
         res.render('./doctorViews/profile', {
             allHospitals,
             doctor,
-            hospitals
+            hospitals,
+            val
         })
     } catch (err) {
         res.send(err)
@@ -239,12 +245,23 @@ module.exports.searchUser_post = async (req, res) => {
 }
 module.exports.hospital_get = async (req, res) => {
     const id = req.params.id
-    const hospital = await Hospital.findOne({ _id:id })   
+    const hospital = await Hospital.findOne({ _id: id })
     const token = hospital.generateAuthToken(maxAge)
 
-        res.cookie('hospital', token, { httpOnly: true, maxAge: maxAge * 1000 })
-        //console.log(user);
-        //signupMail(saveUser)
-        req.flash('success_msg', 'Successfully logged in')
-        res.status(200).redirect('/hospital/profile') 
+    res.cookie('hospital', token, { httpOnly: true, maxAge: maxAge * 1000 })
+    //console.log(user);
+    //signupMail(saveUser)
+    req.flash('success_msg', 'Successfully logged in')
+    res.status(200).redirect('/hospital/profile')
+}
+module.exports.addClinic_post = async (req, res) => {
+    const {name,time,address} = req.body
+    const doctor = req.doctor
+    const clinic=doctor.clinic
+    clinic.push({name,time,address})
+    const updatedDoctor=await Doctor.findByIdAndUpdate(doctor._id, {
+        clinic
+    })
+    console.log(clinic)
+    res.status(200).redirect('/doctor/profile')
 }

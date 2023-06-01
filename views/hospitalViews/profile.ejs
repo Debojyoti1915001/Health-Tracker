@@ -7,6 +7,7 @@
     <script src="https://use.fontawesome.com/67912d8e88.js"></script>
     <link rel="stylesheet" href="../css/NavBar.css">
     <link rel="stylesheet" href="../css/hospitalProfile.css">
+	<link rel="stylesheet" href="../css/Profile.css">
     <link rel="stylesheet" href="../css/modal.css">
 	<title>Profile Page</title>
 </head>
@@ -122,6 +123,7 @@
 			<%if (path === '/hospital/document') { %>
 				<%- include('../partials/diseaseContentHospital'); %>
 			<% } %>
+			
 			<div class="col-lg-2 col-sm-0 col-12 order-2 order-sm-3" id="pSec3">
 				<div id="Dr"><a>Patients</a><img src="../img/doctor-icon.png" class="Icons doctor-icon" ></div>
 				<div>
@@ -171,6 +173,7 @@
 		</div>
 	</div>
 </div>
+
 <div class="mobile-view">
 	<%if (path === '/hospital/profile'||path==='/hospital/patient'||path==='/hospital/search') { %>
 		<div class="container-fluid" >	

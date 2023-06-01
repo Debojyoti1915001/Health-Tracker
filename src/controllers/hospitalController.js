@@ -121,6 +121,8 @@ module.exports.signup_get = (req, res) => {
 
 module.exports.profile_get = async (req, res) => {
     res.locals.hospital = req.hospital
+    const rate=req.hospital.ratings
+    const val=((1*rate[0])+(2*rate[1])+(3*rate[2])+(4*rate[3])+(5*rate[4]))/(rate[0]+rate[1]+rate[2]+rate[3]+rate[4])
      //console.log("hospital", req.hospital)
     const patients = await Relations.find({'isPermitted': true, 'hospitalId': req.hospital._id},"userId").populate('userId','name'); 
     const passDoctors=[];
@@ -128,13 +130,16 @@ module.exports.profile_get = async (req, res) => {
 
     for(var i=0;i<doctor.length;i++){
         var curDoctor=await Doctor.findOne({_id:doctor[i].doctorId})
-        passDoctors.push({"doctor":curDoctor,"availability": doctor[i].availability})
+        var rateD=curDoctor.ratings
+        var valDoc=((1*rateD[0])+(2*rateD[1])+(3*rateD[2])+(4*rateD[3])+(5*rateD[4]))/(rateD[0]+rateD[1]+rateD[2]+rateD[3]+rateD[4])
+        passDoctors.push({"doctor":curDoctor,"availability": doctor[i].availability,"val":valDoc})
     }
-    // console.log("patientssssss",patients)
+    console.log(rate)
     res.render("./hospitalViews/profile",
     {path:'/hospital/profile',
     patients:patients, 
     foundUser:null,
+    val,
     access:null, 
     custom_flash:null, 
     passDoctors
@@ -189,6 +194,7 @@ module.exports.emailVerify_get = async (req, res) => {
 
 module.exports.signup_post = async (req, res) => {
     const { licenseNumber,  address,hospitalName, email, phoneNumber,password, confirmPwd  } = req.body
+    const ratings=[0,0,0,0,0]
     //console.log("in sign up route",req.body);
     if (!(!password || !confirmPwd) && (password != confirmPwd)) {
         req.flash('error_msg', 'Passwords do not match. Try again')
@@ -214,7 +220,7 @@ module.exports.signup_post = async (req, res) => {
             return res.redirect('/hospital/login')
         }
 
-        const hospital = new Hospital({ licenseNumber,  address, hospitalName, email, phoneNumber,password  })
+        const hospital = new Hospital({ licenseNumber,  address, hospitalName, email, phoneNumber,password,ratings  })
         let saveUser = await hospital.save()
         //console.log(saveUser);
         req.flash(
@@ -400,12 +406,13 @@ module.exports.patient_search = async (req, res) =>
            //add here
            const passDoctors=[];
     const doctor=req.hospital.doctor
-
+    const rate=req.hospital.ratings
+    const val=((1*rate[0])+(2*rate[1])+(3*rate[2])+(4*rate[3])+(5*rate[4]))/(rate[0]+rate[1]+rate[2]+rate[3]+rate[4])
     for(var i=0;i<doctor.length;i++){
         var curDoctor=await Doctor.findOne({_id:doctor[i].doctorId})
         passDoctors.push({"doctor":curDoctor,"availability": doctor[i].availability})
     }
-            res.render("./hospitalViews/profile", {passDoctors,path:'/hospital/search', patients:patients,access:access, foundUser:result, custom_flash:custom_flash });
+            res.render("./hospitalViews/profile", {passDoctors,path:'/hospital/search',val, patients:patients,access:access, foundUser:result, custom_flash:custom_flash });
             return 
 
         }
